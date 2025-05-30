@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { Container, Row } from 'reactstrap';
+import { Container, Row,Card,CardHeader,CardBody,Col } from 'reactstrap';
 import BreadCrumb from '../../Components/Common/BreadCrumb';
 import AllTasksTransporter from './AllTasksTransporter';
 import Widgets from './Widgets';
@@ -14,11 +14,24 @@ const OrderManagement = () => {
                 <Container fluid>
 
                     <BreadCrumb title="Orders Management" pageTitle="Auction" />
-                    
-                    <Row className="row-color-ff" style={{paddingTop:"14px"}}>
-                        <h2>Orders Management</h2><br></br>
+                    <Row>
+                        <Col lg={12}>
+                            <Card id="customerList">
+                                <CardHeader className="border-0">
+                                    <Row className="g-4 align-items-center">
+                                        <div className="col-sm">
+                                            <div >
+                                                <h5 className="card-title1 mb-0 bg-light">Order Management</h5>
+                                            </div>
+                                        </div>
+                                    </Row>
+                                </CardHeader>
+                                <CardBody>
+                                <AllTasksTransporter />
+                                </CardBody>
+                            </Card>
+                        </Col>
                     </Row>
-                    <AllTasksTransporter />
                 </Container>
             </div>
         </React.Fragment>

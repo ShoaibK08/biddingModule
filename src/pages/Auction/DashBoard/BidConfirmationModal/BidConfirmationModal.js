@@ -819,8 +819,8 @@ const BidConfirmationModal = ({ isOpen, toggle, bidNo, loginCode }) => {
             className="bid-cancel-btn" 
             disabled={processingAction}
           >
-            <i className="ri-close-line me-1"></i>
-            Close
+         
+            Cancel
           </Button>
         </ModalFooter>
       </Modal>

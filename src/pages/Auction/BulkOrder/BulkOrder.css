@@ -278,7 +278,7 @@
 }
 
 .bulk-order-dropdown-content {
-  max-height: 200px;
+  max-height: 130px;
   overflow-y: auto;
   border-top: 1px solid #ced4da;
 }
@@ -335,7 +335,7 @@
   z-index: 1000;
 }
 
-.bulk-order-modal-content {
+.bulk-order-modal-content2 {
   background-color: #fff;
   border-radius: 8px;
   padding: 30px;
@@ -940,7 +940,7 @@
   z-index: 1050;
 }
 
-.modal-content {
+.modal-content2 {
   width: 800px;
   max-width: 90%;
   background-color: #fff;
@@ -959,7 +959,7 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-.modal-body {
+.modal-body3 {
   padding: 20px;
   overflow: auto;
   flex: 1;

@@ -1312,7 +1312,7 @@ const BulkOrder = ({ bidNo }) => {
   // Success Modal
   const SuccessModal = () => (
     <div className="bulk-order-modal-overlay">
-      <div className="bulk-order-modal-content">
+      <div className="bulk-order-modal-content2">
         <div className="bulk-order-modal-icon">
           <lord-icon
             src="https://cdn.lordicon.com/lupuorrc.json"
@@ -1965,7 +1965,7 @@ const BulkOrder = ({ bidNo }) => {
                     {showTransporterDropdown && (
                       <div className="bulk-order-dropdown" style={{
                         position: "absolute",
-                        width: "100%",
+                        width: "20.8vw",
                         zIndex: 1000,
                         marginTop: "4px",
                         backgroundColor: "#fff",
@@ -2922,7 +2922,7 @@ const BulkOrder = ({ bidNo }) => {
     alignItems: "center",
     zIndex: 1000
   }}>
-    <div className="bulk-order-modal-content" style={{
+    <div className="bulk-order-modal-content2" style={{
       backgroundColor: "white",
       borderRadius: "8px",
       width: "90%",
@@ -2970,7 +2970,7 @@ const BulkOrder = ({ bidNo }) => {
       </div>
 
       {/* Modal Body */}
-      <div className="bulk-order-modal-body" style={{ 
+      <div className="bulk-order-modal-body3" style={{ 
         padding: "0", 
         flex: 1,
         overflowY: "auto"

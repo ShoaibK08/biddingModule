@@ -86,7 +86,7 @@
 }
 
 /* Modal Body */
-.modal-body {
+.modal-body4 {
   padding: 20px;
   overflow: auto;
   flex: 1;
@@ -298,7 +298,7 @@
     padding: 12px 16px;
   }
   
-  .modal-body {
+  .modal-body4 {
     padding: 16px;
   }
   
@@ -329,20 +329,20 @@
 }
 
 /* Scrollbar Styling */
-.modal-body::-webkit-scrollbar {
+.modal-body4::-webkit-scrollbar {
   width: 6px;
 }
 
-.modal-body::-webkit-scrollbar-track {
+.modal-body4::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 3px;
 }
 
-.modal-body::-webkit-scrollbar-thumb {
+.modal-body4::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 3px;
 }
 
-.modal-body::-webkit-scrollbar-thumb:hover {
+.modal-body4::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }

@@ -516,6 +516,7 @@ input[type="text"][placeholder="HH:MM:SS"] {
   margin-top: 4px;
   overflow-y: auto;
   max-height: 300px;
+  width: 20.8vw;
 }
 
 .so-based-order-dropdown.show {
@@ -539,6 +540,7 @@ input[type="text"][placeholder="HH:MM:SS"] {
   justify-content: space-between;
   align-items: center;
     cursor: default;
+    width: 28vw;
 }
 
 .input-container {
@@ -926,6 +928,7 @@ input[type="text"][placeholder="HH:MM:SS"] {
   border-bottom: 1px solid #eee;
   color: #000;
   cursor: pointer;
+  width: 28vw;
 }
 
 .so-based-order-dropdown-item input[type="checkbox"] {

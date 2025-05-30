@@ -6,9 +6,14 @@ import axios from "axios";
 // Import Scroll Bar - SimpleBar
 import SimpleBar from 'simplebar-react';
 
+import * as FileSaver from "file-saver";
+import XLSX from "sheetjs-style";
+
 //Import Flatepicker
 import Flatpickr from "react-flatpickr";
 
+// Export Modal
+import ExportCSVModal from "../../Components/Common/ExportCSVModal";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
@@ -241,53 +246,36 @@ const AllTasksTransporter = () => {
       return;
     }
 
-    console.log("truckdetails",truckDetails);
-     // 1️⃣ Sum “previous” capacity (raw)
     const prevRaw = truckDetails
-    .filter(truck => initialTruckIds.includes(truck.registrationNumber))
-    .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
-    // Round to 3 decimals
+      .filter(truck => initialTruckIds.includes(truck.registrationNumber))
+      .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
     const prevCapacity = Number(prevRaw.toFixed(3));
 
-    console.log(prevRaw);
-
-    // 2️⃣ Sum “current” capacity (raw)
     const currRaw = truckDetails
-    .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
-    .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
-    // Round to 3 decimals
+      .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
+      .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
     const currCapacity = Number(currRaw.toFixed(3));
-
-    console.log(currCapacity);
-    console.log(selectedTruckIds);
-    console.log(selectedTruckIds);
-
-      // selectedTruckIds is already pre-populated
-    // const payload = {
-    //   soNumber: selectedSO1,
-    //   truckIds: selectedTruckIds,
-    //   previousCapacity: prevCapacity,
-    //   currentCapacity: currCapacity,
-    // };
 
     if (soTotalQty < currCapacity) {
       toast.error(
-        `Cannot allocate: total truck capacity (${soTotalQty}) ` +
-        `is less than required (${currCapacity}).`
+        `Allocation failed: The capacity exceeds the allowed limit. Please adjust the capacity and try again.`
       );
       return false;
     }
 
     const payload = {
-      "soNumber": selectedSO1,
-      "vehicleNo": selectedTruckIds,
-      "transporterCode": transporterCode,
-      "newlyAllocatedQuantity": currCapacity,
-      "previouslyAllocatedQuantity": prevCapacity,
-      "orderStatus": "truckallocated",
-      "createdBy": "user01",
-      "plantCode": "N205"
+      soNumber: selectedSO1,
+      vehicleNo: selectedTruckIds,
+      transporterCode: transporterCode,
+      newlyAllocatedQuantity: currCapacity,
+      previouslyAllocatedQuantity: prevCapacity,
+      orderStatus: "truckallocated",
+      createdBy: "user01",
+      plantCode: "N205"
     };
+
+    setIsEditing(true); // Show loader
+
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_LOCAL_URL_8085}/truckAllocation`,
@@ -295,27 +283,107 @@ const AllTasksTransporter = () => {
         config
       );
 
-      if(!res.errorMsg){
+      if (!res.errorMsg) {
         toast.success("Truck allocated successfully");
-        fetchData(1, itemsPerPage, "total");
-        setSelectedTruckIds([]);
-        setInitialTruckIds([]);
-        setModalEdit(false);
-      }else{
+      } else {
         toast.error("Truck Allocation Failed");
-        setSelectedTruckIds([]);
-        setInitialTruckIds([]);
-        setModalEdit(false);
       }
-      // optionally refresh your table here
+
+      fetchData(1, itemsPerPage, "total");
+      setSelectedTruckIds([]);
+      setInitialTruckIds([]);
+      setModalEdit(false);
     } catch (err) {
       console.error(err);
       alert("Failed to update truck allocation");
       setSelectedTruckIds([]);
       setInitialTruckIds([]);
       setModalEdit(false);
+    } finally {
+      setIsEditing(false); // Hide loader
     }
   };
+
+  // const submitEditTruck = async () => {
+  //   if (!selectedSO1) {
+  //     alert("SO Number missing");
+  //     return;
+  //   }
+
+  //   console.log("truckdetails",truckDetails);
+  //    // 1️⃣ Sum “previous” capacity (raw)
+  //   const prevRaw = truckDetails
+  //   .filter(truck => initialTruckIds.includes(truck.registrationNumber))
+  //   .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
+  //   // Round to 3 decimals
+  //   const prevCapacity = Number(prevRaw.toFixed(3));
+
+  //   console.log(prevRaw);
+
+  //   // 2️⃣ Sum “current” capacity (raw)
+  //   const currRaw = truckDetails
+  //   .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
+  //   .reduce((sum, t) => sum + parseFloat(t.vehicleCapacityMax || 0), 0);
+  //   // Round to 3 decimals
+  //   const currCapacity = Number(currRaw.toFixed(3));
+
+  //   console.log(currCapacity);
+  //   console.log(selectedTruckIds);
+  //   console.log(selectedTruckIds);
+
+  //     // selectedTruckIds is already pre-populated
+  //   // const payload = {
+  //   //   soNumber: selectedSO1,
+  //   //   truckIds: selectedTruckIds,
+  //   //   previousCapacity: prevCapacity,
+  //   //   currentCapacity: currCapacity,
+  //   // };
+
+  //   if (soTotalQty < currCapacity) {
+  //     toast.error(
+  //       `Allocation failed: The capacity exceeds the allowed limit. Please adjust the capacity and try again.`
+  //     );
+  //     return false;
+  //   }
+
+  //   const payload = {
+  //     "soNumber": selectedSO1,
+  //     "vehicleNo": selectedTruckIds,
+  //     "transporterCode": transporterCode,
+  //     "newlyAllocatedQuantity": currCapacity,
+  //     "previouslyAllocatedQuantity": prevCapacity,
+  //     "orderStatus": "truckallocated",
+  //     "createdBy": "user01",
+  //     "plantCode": "N205"
+  //   };
+  //   try {
+  //     const res = await axios.post(
+  //       `${process.env.REACT_APP_LOCAL_URL_8085}/truckAllocation`,
+  //       payload,
+  //       config
+  //     );
+
+  //     if(!res.errorMsg){
+  //       toast.success("Truck allocated successfully");
+  //       fetchData(1, itemsPerPage, "total");
+  //       setSelectedTruckIds([]);
+  //       setInitialTruckIds([]);
+  //       setModalEdit(false);
+  //     }else{
+  //       toast.error("Truck Allocation Failed");
+  //       setSelectedTruckIds([]);
+  //       setInitialTruckIds([]);
+  //       setModalEdit(false);
+  //     }
+  //     // optionally refresh your table here
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to update truck allocation");
+  //     setSelectedTruckIds([]);
+  //     setInitialTruckIds([]);
+  //     setModalEdit(false);
+  //   }
+  // };
 
   const columnsTruckEdit = useMemo(() => [
     {
@@ -376,7 +444,7 @@ const AllTasksTransporter = () => {
       filterable: false,
     },
     {
-      Header: "Unladen bed Capacity",
+      Header: "Unladen Capacity",
       accessor: "tareWeight",
       filterable: false,
     },
@@ -493,21 +561,21 @@ const AllTasksTransporter = () => {
     []
   );
 
+  const [isAllocating, setIsAllocating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const allocateTruckDetail = async () => {
     if (!selectedSO1 || selectedTruckIds.length === 0) {
       alert("Please select a truck and ensure SO number is available.");
       return;
     }
 
-    // Sum with parseFloat, then format to (say) 3 decimal places:
     const totalQuantityRaw = truckDetails
-    .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
-    .reduce((sum, truck) => sum + parseFloat(truck.vehicleCapacityMax || 0), 0);
+      .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
+      .reduce((sum, truck) => sum + parseFloat(truck.vehicleCapacityMax || 0), 0);
 
-    // Format for display (e.g., 3 decimal places)
     const totalQuantity = Number(totalQuantityRaw.toFixed(3));
-
-    console.log(totalQuantity); // e.g. 12.345
 
     if (soTotalQty < totalQuantity) {
       toast.error(
@@ -518,35 +586,92 @@ const AllTasksTransporter = () => {
     }
 
     const payload = {
-      "soNumber": selectedSO1,
-      "vehicleNo": selectedTruckIds,
-      "transporterCode": transporterCode,
-      "newlyAllocatedQuantity": totalQuantity,
-      //"previouslyAllocatedQuantity": 60,
-      "orderStatus": "truckallocated",
-      "createdBy": "user01",
-      "plantCode": "N205"
+      soNumber: selectedSO1,
+      vehicleNo: selectedTruckIds,
+      transporterCode,
+      newlyAllocatedQuantity: totalQuantity,
+      orderStatus: "truckallocated",
+      createdBy: "user01",
+      plantCode: "N205",
     };
-  
+
+    setIsAllocating(true); // 🔄 Show loader
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/truckAllocation`,payload,config);
-  
+      const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/truckAllocation`, payload, config);
+
       if (!response.errorMsg) {
         toast.success("Truck allocated successfully!");
-        setSelectedTruckIds([]);
-        fetchData(1, itemsPerPage, "total");
       } else {
         toast.error("Truck Allocation Failed");
-        setSelectedTruckIds([]);
-        fetchData(1, itemsPerPage, "total");
       }
-    } catch (error) {
-      toast.error("An unexpected error occurred.");      
+
       setSelectedTruckIds([]);
       fetchData(1, itemsPerPage, "total");
+    } catch (error) {
+      toast.error("An unexpected error occurred.");
+      setSelectedTruckIds([]);
+      fetchData(1, itemsPerPage, "total");
+    } finally {
+      setIsAllocating(false); // ✅ Hide loader
+      toggle();
     }
-    toggle();
-  };  
+  };
+
+  // const allocateTruckDetail = async () => {
+  //   if (!selectedSO1 || selectedTruckIds.length === 0) {
+  //     alert("Please select a truck and ensure SO number is available.");
+  //     return;
+  //   }
+
+  //   // Sum with parseFloat, then format to (say) 3 decimal places:
+  //   const totalQuantityRaw = truckDetails
+  //   .filter(truck => selectedTruckIds.includes(truck.registrationNumber))
+  //   .reduce((sum, truck) => sum + parseFloat(truck.vehicleCapacityMax || 0), 0);
+
+  //   // Format for display (e.g., 3 decimal places)
+  //   const totalQuantity = Number(totalQuantityRaw.toFixed(3));
+
+  //   console.log(totalQuantity); // e.g. 12.345
+
+  //   if (soTotalQty < totalQuantity) {
+  //     toast.error(
+  //       `Cannot allocate: total truck capacity (${soTotalQty}) ` +
+  //       `is less than required (${totalQuantity}).`
+  //     );
+  //     return false;
+  //   }
+
+  //   const payload = {
+  //     "soNumber": selectedSO1,
+  //     "vehicleNo": selectedTruckIds,
+  //     "transporterCode": transporterCode,
+  //     "newlyAllocatedQuantity": totalQuantity,
+  //     //"previouslyAllocatedQuantity": 60,
+  //     "orderStatus": "truckallocated",
+  //     "createdBy": "user01",
+  //     "plantCode": "N205"
+  //   };
+  
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/truckAllocation`,payload,config);
+  
+  //     if (!response.errorMsg) {
+  //       toast.success("Truck allocated successfully!");
+  //       setSelectedTruckIds([]);
+  //       fetchData(1, itemsPerPage, "total");
+  //     } else {
+  //       toast.error("Truck Allocation Failed");
+  //       setSelectedTruckIds([]);
+  //       fetchData(1, itemsPerPage, "total");
+  //     }
+  //   } catch (error) {
+  //     toast.error("An unexpected error occurred.");      
+  //     setSelectedTruckIds([]);
+  //     fetchData(1, itemsPerPage, "total");
+  //   }
+  //   toggle();
+  // };  
 
   useEffect(() => {
     if (load === 0) {
@@ -645,9 +770,9 @@ const AllTasksTransporter = () => {
 
   //const CustomTableComponent = ({ data = [], onSort }) => {
   const [visibleColumns, setVisibleColumns] = useState({
-    checkbox: true,
+    // checkbox: true,
     soNumber: true,
-    soItem: true,
+    // soItem: true,
     orderQuantity: true,
     allocatedQty: true,
     availableQty: true,
@@ -719,36 +844,172 @@ const AllTasksTransporter = () => {
       alert("Please enter a remark.");
       return;
     }
-  
+
     const payload = {
-      transporterCode: selectedTransporter, // Replace with dynamic value if needed
+      transporterCode: selectedTransporter,
       soNumber: selectedSO,
       orderStatus: modalAction,
       remarks: cancelRemark,
     };
-  
+
+    setIsSubmitting(true); // 🔄 Start loader
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement/update`, payload,config);
-  
+      const response = await axios.post(
+        `${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement/update`,
+        payload,
+        config
+      );
+
       if (!response.errorMsg) {
-        toast.success(`${modalAction === "committed" ? "Order committed" : "Order rejected"} successfully.`);
-        fetchData(1, itemsPerPage, "total");
-        setModalVisible(false);
-        // optionally refresh your order list
+        toast.success(
+          `${modalAction === "committed" ? "Order committed" : "Order rejected"} successfully.`
+        );
       } else {
         toast.error(response.errorMsg);
-        fetchData(1, itemsPerPage, "total");
-        setModalVisible(false);
       }
+      fetchData(1, itemsPerPage, "total");
+      setModalVisible(false);
     } catch (err) {
       console.error(err);
       alert("Something went wrong.");
+    } finally {
+      setIsSubmitting(false); // ✅ Stop loader
     }
-  };  
+  };
+
+  // const submitCommitReject = async () => {
+  //   if (!cancelRemark.trim()) {
+  //     alert("Please enter a remark.");
+  //     return;
+  //   }
+  
+  //   const payload = {
+  //     transporterCode: selectedTransporter, // Replace with dynamic value if needed
+  //     soNumber: selectedSO,
+  //     orderStatus: modalAction,
+  //     remarks: cancelRemark,
+  //   };
+  
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement/update`, payload,config);
+  
+  //     if (!response.errorMsg) {
+  //       toast.success(`${modalAction === "committed" ? "Order committed" : "Order rejected"} successfully.`);
+  //       fetchData(1, itemsPerPage, "total");
+  //       setModalVisible(false);
+  //       // optionally refresh your order list
+  //     } else {
+  //       toast.error(response.errorMsg);
+  //       fetchData(1, itemsPerPage, "total");
+  //       setModalVisible(false);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Something went wrong.");
+  //   }
+  // };  
+
+  const [isExportCSV, setIsExportCSV] = useState(false);
+  
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    downloadCSV();
+    setIsExportCSV(false)
+  };
+
+  const statusTextMap = {
+    0: "Not Assigned",
+    1: "Assigned",
+    2: "Committed",
+    3: "Truck Allocated",
+    4: "Rejected",
+    5: "Cancelled",
+  };
+
+  const downloadCSV = () => {
+  const headers = [];
+  const keys = [];
+
+  // Build headers and keys based on visibleColumns (excluding cancelOrder and transporterDetail)
+  if (visibleColumns.soNumber) {
+    headers.push("SO Number");
+    keys.push("soNumber");
+  }
+  if (visibleColumns.material) {
+    headers.push("Material");
+    keys.push("material");
+  }
+  if (visibleColumns.orderQuantity) {
+    headers.push("Total Quantity (MT)");
+    keys.push("totalQuantity");
+  }
+  if (visibleColumns.availableQty) {
+    headers.push("Available Quantity (MT)");
+    keys.push("availableQuantity");
+  }
+  if (visibleColumns.cityDesc) {
+    headers.push("City Desc");
+    keys.push("city");
+  }
+  if (visibleColumns.orderPriority) {
+    headers.push("Order Priority");
+    keys.push("priorityStatus");
+  }
+  if (visibleColumns.soStatus) {
+    headers.push("SO Status");
+    keys.push("soStatus");
+  }
+
+  // Build export data
+  const exportData = data.map(row => {
+    const newRow = {};
+    keys.forEach((key, i) => {
+      let value = row[key];
+
+      // Handle special cases
+      if (key === "priorityStatus") {
+        value = value === 1 ? "Yes" : "No";
+      } else if (key === "soStatus") {
+        value = statusTextMap[value] || "Unknown";
+      }
+
+      newRow[headers[i]] = value;
+    });
+    return newRow;
+  });
+
+  // Create and export Excel
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(exportData, { header: headers });
+  ws["!cols"] = headers.map(() => ({ wpx: 120 }));
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+  const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+  FileSaver.saveAs(blob, `Orders.xlsx`);
+
+  function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+  }
+};
+
 
   return (
     <React.Fragment>
+      <ExportCSVModal
+        show={isExportCSV}
+        onCloseClick={() => setIsExportCSV(false)}
+        onDownloadClick={handleDownload}
+      />
       <div className="row row-color-ff">
+        
         <Col lg={12}>
           <div className="" id="tasksList">
             <div className="border-0">
@@ -760,6 +1021,7 @@ const AllTasksTransporter = () => {
                 </div>
               </div>
             </div>
+            <button className="btn btn-success" style={{float: "right",marginRight: "56px",marginTop: "7px"}} onClick={() => setIsExportCSV(true)}>Export</button>
             <div className="">
               <div className="" style={{ padding: "7px 3px 2px 0px" }}>
                 <div style={{ float: "left", width: "7%" }}>
@@ -776,7 +1038,7 @@ const AllTasksTransporter = () => {
                 {/* <button className="btn btn-success add-btn me-1 for-new-css-1" onClick={() => { setIsEdit(false); toggle(); }}><i className="ri-add-line align-bottom me-1"></i> Assign Transporter</button> */}
               </div>
             <div className="table-responsive">
-              <section ref={dropdownRef}>
+              <section ref={dropdownRef}>           
                 <div>
                   <Nav className="nav-tabs nav-tabs-custom nav-success tog_con" role="tablist" style={{ border: "solid 1px lightgray", borderRadius: "4px", position: "absolute", top: "21px", right: "13px" }}>
                     <NavItem>
@@ -819,26 +1081,29 @@ const AllTasksTransporter = () => {
                 <table className="table table-responsive table-nowrap">
                   <thead>
                     <tr>
-                      {visibleColumns.soNumber && <th  class="color-blue-bg">SO Number</th>}
-                      {visibleColumns.material && <th class="color-blue-bg">Material</th>}
-                      {visibleColumns.orderQuantity && <th class="color-blue-bg">Total Quantity</th>}
-                      {visibleColumns.availableQty && <th class="color-blue-bg">Available Quantity</th>}
-                      {visibleColumns.cityDesc && <th class="color-blue-bg">City Desc</th>}
-                      {visibleColumns.orderPriority && <th class="color-blue-bg">Order Priority</th>}
-                      {visibleColumns.soStatus && <th class="color-blue-bg">SO Status</th>}
-                      {visibleColumns.cancelOrder && <th class="color-blue-bg">Order Commitment</th>}
-                      {visibleColumns.transporterDetail && <th class="color-blue-bg">Truck Details</th>}
+                      {visibleColumns.soNumber && <th >SO Number</th>}
+                      {visibleColumns.material && <th>Material</th>}
+                      {visibleColumns.orderQuantity && <th>Total Quantity (MT)</th>}
+                      {visibleColumns.availableQty && <th>Available Quantity (MT)</th>}
+                      {visibleColumns.cityDesc && <th>City Desc</th>}
+                      {visibleColumns.orderPriority && <th>Order Priority</th>}
+                      {visibleColumns.soStatus && <th>SO Status</th>}
+                      {visibleColumns.cancelOrder && <th>Order Commitment</th>}
+                      {visibleColumns.transporterDetail && <th>Truck Details</th>}
                     </tr>
                   </thead>
 
                   <tbody>
                     {data.length > 0 ? (
                       data.map((item, index) => (
-                        <tr key={index}>
+                        <tr
+                            key={index}
+                            style={item.priorityStatus === 1 ? { backgroundColor: "#FFDDDE", color: "#000" } : {}}
+                          >
                           {visibleColumns.soNumber && <td>{item.soNumber}</td>}
                           {visibleColumns.material && <td>{item.material}</td>}
-                          {visibleColumns.orderQuantity && <td>{item.totalQuantity + " MT"}</td>}
-                          {visibleColumns.availableQty && <td>{item.availableQuantity + " MT"}</td>}
+                          {visibleColumns.orderQuantity && <td>{item.totalQuantity}</td>}
+                          {visibleColumns.availableQty && <td>{item.availableQuantity}</td>}
                           {visibleColumns.cityDesc && <td>{item.city}</td>}
                           {visibleColumns.orderPriority && <td>{item.priorityStatus === 1 ? "Yes" : "No"}</td>}
                           {visibleColumns.soStatus && <td>
@@ -873,7 +1138,7 @@ const AllTasksTransporter = () => {
                             //     <button className="btn color-blue-bg" style={{ padding: "5px", border: "1px solid #405189" }}>Allocate Truck</button>
                             //   </a>{" "}
                             //   <a href="#" onClick={() => toggleModal(item.soNumber)}>
-                            //     <i className="ri-eye-fill color-g align-bottom me-2 fs-22 text-muted"></i>
+                            //     <i className="ri-eye-fill color-g align-bottom me-2 fs-22 "></i>
                             //   </a>
                             // </td>
                               <td>
@@ -897,6 +1162,7 @@ const AllTasksTransporter = () => {
                                 {item.soStatus !== 3 && (
                                   <button
                                     className="btn color-blue-bg"
+                                    disabled={item.soStatus !== 2 || item.soStatus !== 4 || item.soStatus === 4}
                                     style={{ padding: "5px", border: "1px solid #405189" }}
                                     onClick={() => toggle(item.transporterCode,item.soNumber,item.availableQuantity)}
                                   >
@@ -947,7 +1213,7 @@ const AllTasksTransporter = () => {
         className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggleEditModal}>
+        <ModalHeader className="p-3" toggle={toggleEditModal}>
           {"Edit Truck - "} <span>{selectedSO1}</span>
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -963,7 +1229,7 @@ const AllTasksTransporter = () => {
                 divClass="table-responsive table-card table-card1 mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light "
                 SearchPlaceholder='Search for tasks or something...'
             />
           </ModalBody>
@@ -976,7 +1242,27 @@ const AllTasksTransporter = () => {
                 }}
                 className="btn-light"
               >Close</Button>
-              <button type="button" className="btn color-blue-bg" id="add-btn" onClick={() => { submitEditTruck(); }}>{"Edit Truck"}</button>
+              {/* <button type="button" className="btn color-blue-bg" id="add-btn" onClick={() => { submitEditTruck(); }}>{"Edit Truck"}</button> */}
+              <button
+                  type="button"
+                  className="btn color-blue-bg"
+                  id="add-btn"
+                  onClick={submitEditTruck}
+                  disabled={isEditing}
+                >
+                  {isEditing ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Saving...
+                    </>
+                  ) : (
+                    "Edit Truck"
+                  )}
+              </button>
             </div>
           </div>
       </Modal> 
@@ -989,7 +1275,7 @@ const AllTasksTransporter = () => {
         className="border-0"
         modalClassName="modal fade zoomIn"
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={() => setModalVisible(false)}>
+        <ModalHeader className="p-3" toggle={() => setModalVisible(false)}>
           {modalAction === "committed" ? "Commit Order" : "Reject Order"}
         </ModalHeader>
         <ModalBody className="modal-body">
@@ -1025,7 +1311,7 @@ const AllTasksTransporter = () => {
         className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggle}>
+        <ModalHeader className="p-3" toggle={toggle}>
           {"Allocate Truck - "} <span>{selectedSO1}</span>
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -1041,7 +1327,7 @@ const AllTasksTransporter = () => {
                 divClass="table-responsive table-card table-card1 mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light "
                 handleTaskClick={handleTaskClicks}
                 SearchPlaceholder='Search for tasks or something...'
             />
@@ -1055,9 +1341,23 @@ const AllTasksTransporter = () => {
                 }}
                 className="btn-light"
               >Close</Button>
-              <button type="submit" className="btn color-blue-bg" id="add-btn" onClick={() => { 
+              {/* <button type="submit" className="btn color-blue-bg" id="add-btn" onClick={() => { 
                 allocateTruckDetail();
-              }}>{"Allocate Truck"}</button>
+              }}>{"Allocate Truck"}</button> */}
+              <button
+                className="btn btn-loader color-blue-bg"
+                onClick={allocateTruckDetail}
+                disabled={isAllocating}
+              >
+                {isAllocating ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Allocating...
+                  </>
+                ) : (
+                  "Allocate Truck"
+                )}
+              </button>
             </div>
           </div>
       </Modal>
@@ -1070,7 +1370,7 @@ const AllTasksTransporter = () => {
         className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggleModal}>
+        <ModalHeader className="p-3" toggle={toggleModal}>
           {"Truck Details"}
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -1085,7 +1385,7 @@ const AllTasksTransporter = () => {
                 divClass="table-responsive table-card table-card1 mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light "
                // handleTaskClick={handleTaskClicks}
                 SearchPlaceholder='Search for tasks or something...'
             />

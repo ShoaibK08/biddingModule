@@ -406,20 +406,34 @@ const checkForChanges = (currentValues) => {
         'transportationZone', 'shippingPoint', 'status'
     ];
 
+    // for (let field of fieldsToCheck) {
+    //     // Handle date field specially
+    //     if (field === 'deliveryDate') {
+    //         const originalDate = originalValues[field] ? new Date(originalValues[field]).toISOString().slice(0, 16) : "";
+    //         const currentDate = currentValues[field] ? new Date(currentValues[field]).toISOString().slice(0, 16) : "";
+    //         if (originalDate !== currentDate) {
+    //             changesDetected = true;
+    //             break;
+    //         }
+    //     } else {
+    //         // For other fields, direct comparison
+    //         if ((originalValues[field] || "") !== (currentValues[field] || "")) {
+    //             changesDetected = true;
+    //             break;
+    //         }
+    //     }
+    // }
+
     for (let field of fieldsToCheck) {
-        // Handle date field specially
         if (field === 'deliveryDate') {
-            const originalDate = originalValues[field] ? new Date(originalValues[field]).toISOString().slice(0, 16) : "";
-            const currentDate = currentValues[field] ? new Date(currentValues[field]).toISOString().slice(0, 16) : "";
-            if (originalDate !== currentDate) {
+            const originalTime = originalValues[field] ? originalValues[field] : "";
+            const currentTime = currentValues[field] ? currentValues[field] : "";
+            if (originalTime !== currentTime) {
                 changesDetected = true;
-                break;
             }
         } else {
-            // For other fields, direct comparison
             if ((originalValues[field] || "") !== (currentValues[field] || "")) {
                 changesDetected = true;
-                break;
             }
         }
     }
@@ -840,8 +854,8 @@ const checkForChanges = (currentValues) => {
         {
             options: [
                 { label: "Select Selection", value: "" },
-                { label: "Auto", value: "Auto" },
-                { label: "Manual", value: "Manual" },
+                { label: "Fastest Route", value: "Fastest Route" },
+                { label: "Slowest Route", value: "Slowest Route" },
             ],
         },
     ];
@@ -1072,12 +1086,12 @@ const checkForChanges = (currentValues) => {
                                             {!!isEdit ? "Edit Route" : "Add Route"}
                                         </ModalHeader>
                                         <Form className="tablelist-form" onSubmit={handleSubmit}>
-                                            <ModalBody style={{ padding: '1.5rem 1rem 0.5rem' }}>
-                                                <Row style={{ margin: '-0.35rem -0.5rem' }}>
+                                            <ModalBody>
+                                                <Row className="g-3">
                                                     {/* Route Code only shown in Edit mode */}
                                                     {isEdit && (
-                                                        <Col md={4} style={{ padding: '0.15rem 0.5rem' }}>
-                                                            <Label htmlFor="routeCode" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                        <Col md={4}>
+                                                            <Label htmlFor="routeCode" className="form-label">
                                                                 Route Code
                                                             </Label>
                                                             <Input
@@ -1090,15 +1104,15 @@ const checkForChanges = (currentValues) => {
                                                                 value={values.routeCode}
                                                                 onChange={handleInputChange}
                                                                 disabled={true}
-                                                                style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                                
                                                             />
                                                         </Col>
                                                     )}
 
                                                     {/* Route Name Field - With Field Error */}
                                                     {isEdit && (
-                                                        <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                            <Label htmlFor="routeName" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                        <Col md={4}>
+                                                            <Label htmlFor="routeName" className="form-label">
                                                                 Route Name<span style={{ color: "red" }}>*</span>
                                                             </Label>
                                                             <Input
@@ -1113,10 +1127,10 @@ const checkForChanges = (currentValues) => {
                                                                 onChange={handleInputChange}
                                                                 onKeyPress={handleKeyPress}
                                                                 onPaste={handlePaste}
-                                                                style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                                
                                                             />
                                                             {fieldErrors.routeName && (
-                                                                <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                                <div className="invalid-feedback d-block">
                                                                     <i className="ri-error-warning-line me-1"></i>
                                                                     {fieldErrors.routeName}
                                                                 </div>
@@ -1125,8 +1139,8 @@ const checkForChanges = (currentValues) => {
                                                     )}
 
                                                     {/* Route Destination Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="routeDestination" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="routeDestination" className="form-label">
                                                             Route Destination<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1140,49 +1154,49 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.routeDestination && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.routeDestination}
                                                             </div>
                                                         )}
                                                     </Col>
 
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-    <Label htmlFor="routeType" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
-        Route Type<span style={{ color: "red" }}>*</span>
-    </Label>
-    <Input
-        name="routeType"
-        type="select"
-        className="form-select"
-        id="routeType"
-        value={values.routeType}
-        onChange={handleInputChange}
-        required
-        disabled={routeTypesLoading}
-        style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
-    >
-        <option value="">
-            {routeTypesLoading ? "Loading Route Types..." : "Select Type"}
-        </option>
-        {routeTypes.map((item) => (
-            <option value={item.routeType} key={item.id}>
-                {item.routeType}
-            </option>
-        ))}
-    </Input>
-    {routeTypesLoading && (
-        <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-            <i className="ri-loader-2-line"></i> Loading route types...
-        </small>
-    )}
-</Col>
+                                                <Col md={4}>
+                                                    <Label htmlFor="routeType" className="form-label">
+                                                        Route Type<span style={{ color: "red" }}>*</span>
+                                                    </Label>
+                                                    <Input
+                                                        name="routeType"
+                                                        type="select"
+                                                        className="form-select"
+                                                        id="routeType"
+                                                        value={values.routeType}
+                                                        onChange={handleInputChange}
+                                                        required
+                                                        disabled={routeTypesLoading}
+                                                        
+                                                    >
+                                                        <option value="">
+                                                            {routeTypesLoading ? "Loading Route Types..." : "Select Type"}
+                                                        </option>
+                                                        {routeTypes.map((item) => (
+                                                            <option value={item.routeType} key={item.id}>
+                                                                {item.routeType}
+                                                            </option>
+                                                        ))}
+                                                    </Input>
+                                                    {routeTypesLoading && (
+                                                        <small className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                                            <i className="ri-loader-2-line"></i> Loading route types...
+                                                        </small>
+                                                    )}
+                                                </Col>
 
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="transportationType" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="transportationType" className="form-label">
                                                             Transportation Type<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1193,7 +1207,7 @@ const checkForChanges = (currentValues) => {
                                                             value={values.transportationType}
                                                             onChange={handleInputChange}
                                                             required
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         >
                                                             {transportationTypes.map((item, key) => (
                                                                 <React.Fragment key={key}>
@@ -1203,26 +1217,28 @@ const checkForChanges = (currentValues) => {
                                                         </Input>
                                                     </Col>
 
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="deliveryDate" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
-                                                            Delivery Date<span style={{ color: "red" }}>*</span>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="deliveryDate" className="form-label" >
+                                                            Delivery Time<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
-                                                            type="datetime-local"
+                                                            type="time"
+                                                            // type="datetime-local"
                                                             required
                                                             className="form-control"
                                                             name="deliveryDate"
                                                             id="deliveryDate"
-                                                       min={new Date().toISOString().slice(0, 16)}
-                                                            value={values.deliveryDate ? new Date(values.deliveryDate).toISOString().slice(0, 16) : ""}
+                                                            // min={new Date().toISOString().slice(0, 16)}
+                                                            // value={values.deliveryDate ? new Date(values.deliveryDate).toISOString().slice(0, 16) : ""}
+                                                            value={values.deliveryDate ? values.deliveryDate : ""}
                                                             onChange={handleInputChange}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                     </Col>
 
                                                     {/* Shipping Type Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="shippingType" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="shippingType" className="form-label">
                                                             Shipping Type<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1236,18 +1252,18 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.shippingType && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.shippingType}
                                                             </div>
                                                         )}
                                                     </Col>
 
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="routeDetermination" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="routeDetermination" className="form-label">
                                                             Route Determination<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1258,7 +1274,7 @@ const checkForChanges = (currentValues) => {
                                                             value={values.routeDetermination}
                                                             onChange={handleInputChange}
                                                             required
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         >
                                                             {routeDeterminations.map((item, key) => (
                                                                 <React.Fragment key={key}>
@@ -1269,8 +1285,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Intermediate Stops Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="intermediateStops" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="intermediateStops" className="form-label">
                                                             Intermediate Stops<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1284,10 +1300,10 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.intermediateStops && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.intermediateStops}
                                                             </div>
@@ -1295,8 +1311,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Route Distance Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="routeDistance" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="routeDistance" className="form-label">
                                                             Route Distance<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1310,10 +1326,10 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.routeDistance && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.routeDistance}
                                                             </div>
@@ -1321,8 +1337,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Transportation Cost Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="transportationCost" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="transportationCost" className="form-label">
                                                             Transportation Cost<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1336,10 +1352,10 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.transportationCost && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.transportationCost}
                                                             </div>
@@ -1347,8 +1363,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Carrier Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="carrier" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="carrier" className="form-label">
                                                             Carrier<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1362,18 +1378,18 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.carrier && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.carrier}
                                                             </div>
                                                         )}
                                                     </Col>
 
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="routeSelection" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="routeSelection" className="form-label">
                                                             Route Selection<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1384,7 +1400,7 @@ const checkForChanges = (currentValues) => {
                                                             value={values.routeSelection}
                                                             onChange={handleInputChange}
                                                             required
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         >
                                                             {routeSelections.map((item, key) => (
                                                                 <React.Fragment key={key}>
@@ -1395,8 +1411,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Transportation Zone Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="transportationZone" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="transportationZone" className="form-label">
                                                             Transportation Zone<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1410,10 +1426,10 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.transportationZone && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.transportationZone}
                                                             </div>
@@ -1421,8 +1437,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {/* Shipping Point Field - With Field Error */}
-                                                    <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                        <Label htmlFor="shippingPoint" className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                    <Col md={4}>
+                                                        <Label htmlFor="shippingPoint" className="form-label">
                                                             Shipping Point<span style={{ color: "red" }}>*</span>
                                                         </Label>
                                                         <Input
@@ -1436,10 +1452,10 @@ const checkForChanges = (currentValues) => {
                                                             onChange={handleInputChange}
                                                             onKeyPress={handleKeyPress}
                                                             onPaste={handlePaste}
-                                                            style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                            
                                                         />
                                                         {fieldErrors.shippingPoint && (
-                                                            <div className="invalid-feedback d-block" style={{ color: '#dc3545', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            <div className="invalid-feedback d-block">
                                                                 <i className="ri-error-warning-line me-1"></i>
                                                                 {fieldErrors.shippingPoint}
                                                             </div>
@@ -1447,8 +1463,8 @@ const checkForChanges = (currentValues) => {
                                                     </Col>
 
                                                     {isEdit && (
-                                                        <Col lg={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
-                                                            <Label className="form-label" style={{ marginBottom: '0', fontSize: '0.85rem' }}>
+                                                        <Col lg={4}>
+                                                            <Label className="form-label">
                                                                 Status<span style={{ color: "red" }}>*</span>
                                                             </Label>
                                                             <Input
@@ -1458,7 +1474,7 @@ const checkForChanges = (currentValues) => {
                                                                 value={values.status}
                                                                 onChange={handleInputChange}
                                                                 required
-                                                                style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem', minHeight: '32px' }}
+                                                                
                                                             >
                                                                 {status.map((item, key) => (
                                                                     <React.Fragment key={key}>
@@ -1492,107 +1508,107 @@ const checkForChanges = (currentValues) => {
                                         </ModalHeader>
                                         <ModalBody style={{ padding: '1.5rem 1rem 0.5rem' }}>
                                             <Row style={{ marginTop: '-0.25rem', marginBottom: '-0.25rem' }}>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Code</Label>
+                                                        <Label className="form-label fw-semibold">Route Code</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeCode}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Name</Label>
+                                                        <Label className="form-label fw-semibold">Route Name</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeName}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Plant Code</Label>
+                                                        <Label className="form-label fw-semibold">Plant Code</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.plantCode}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Destination</Label>
+                                                        <Label className="form-label fw-semibold">Route Destination</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeDestination}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Type</Label>
+                                                        <Label className="form-label fw-semibold">Route Type</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeType}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Transportation Type</Label>
+                                                        <Label className="form-label fw-semibold">Transportation Type</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.transportationType}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Delivery Date</Label>
+                                                        <Label className="form-label fw-semibold">Delivery Date</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>
-                                                            {viewData.deliveryDate ? new Date(viewData.deliveryDate).toLocaleString() : ""}
+                                                            {viewData.deliveryDate ? viewData.deliveryDate : ""}
                                                         </p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Shipping Type</Label>
+                                                        <Label className="form-label fw-semibold">Shipping Type</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.shippingType}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Determination</Label>
+                                                        <Label className="form-label fw-semibold">Route Determination</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeDetermination}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Intermediate Stops</Label>
+                                                        <Label className="form-label fw-semibold">Intermediate Stops</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.intermediateStops}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Distance</Label>
+                                                        <Label className="form-label fw-semibold">Route Distance</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeDistance}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Transportation Cost</Label>
+                                                        <Label className="form-label fw-semibold">Transportation Cost</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.transportationCost}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Carrier</Label>
+                                                        <Label className="form-label fw-semibold">Carrier</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.carrier}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Route Selection</Label>
+                                                        <Label className="form-label fw-semibold">Route Selection</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.routeSelection}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Transportation Zone</Label>
+                                                        <Label className="form-label fw-semibold">Transportation Zone</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.transportationZone}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Shipping Point</Label>
+                                                        <Label className="form-label fw-semibold">Shipping Point</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>{viewData.shippingPoint}</p>
                                                     </div>
                                                 </Col>
-                                                <Col md={4} style={{ paddingTop: '0.25rem', paddingBottom: '0.25rem' }}>
+                                                <Col md={4}>
                                                     <div>
-                                                        <Label className="form-label fw-semibold" style={{ marginBottom: '0', fontSize: '0.85rem' }}>Status</Label>
+                                                        <Label className="form-label fw-semibold">Status</Label>
                                                         <p className="form-control form-control-sm bg-light" style={{ marginBottom: '0', paddingTop: '0.15rem', paddingBottom: '0.15rem', minHeight: '28px' }}>
                                                             {viewData.status === 'A' ? 'Active' : viewData.status === 'D' ? 'Deactive' : viewData.status}
                                                         </p>

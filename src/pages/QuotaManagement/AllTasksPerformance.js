@@ -640,7 +640,7 @@ console.log("DATA", [{ soNumber: "SO1234" }]);
                   divClass="table-responsive table-card mb-3"
                   tableClass="align-middle table-nowrap mb-0"
                   theadClass="table-light table-nowrap"
-                  thClass="table-light color-blue-bg text-muted"
+                  thClass="table-light text-muted"
                   handleTaskClick={handleCustomerClick}
                   SearchPlaceholder='Search for orders or something...'
                   className="custom-header-css"
@@ -680,7 +680,7 @@ console.log("DATA", [{ soNumber: "SO1234" }]);
                 divClass="table-responsive table-card mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light text-muted"
                 handleTaskClick={handleTaskClicks}
                 isTaskListFilter={true}
                 SearchPlaceholder='Search for tasks or something...'
@@ -724,7 +724,7 @@ console.log("DATA", [{ soNumber: "SO1234" }]);
                 divClass="table-responsive table-card mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light text-muted"
                 isTaskListFilter={true}
                 SearchPlaceholder='Search for tasks or something...'
             />
@@ -795,7 +795,7 @@ console.log("DATA", [{ soNumber: "SO1234" }]);
                 divClass="table-responsive table-card mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light text-muted"
                // handleTaskClick={handleTaskClicks}
                 isTaskListFilter={true}
                 SearchPlaceholder='Search for tasks or something...'

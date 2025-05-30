@@ -825,7 +825,7 @@ const Navdata = () => {
         },
         {
             id: "order-summery",
-            label: "Order Summery",
+            label: "Order Summary",
             icon: "ri-file-list-line",
             link: "/#",
             stateVariables: isOrderSummery,

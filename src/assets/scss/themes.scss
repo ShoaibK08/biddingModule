@@ -546,6 +546,13 @@ $value in $theme-colors {
   height: 250px !important;
 }
 
+.disabled-row {
+  background-color: rgba(255, 0, 0, 0.2);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}
+
 [data-layout="horizontal"] .chat-conversation {
   &.chatwidgets {
     height: 250px !important;
@@ -1811,16 +1818,16 @@ $value in $theme-colors {
   background-color: #03AA98;
   color: #fff !important;
 }
-.btn:hover{
-  background-color: unset !important;
-  color: unset !important;
-  box-shadow: unset !important;
-  /* and anything else you had on hover: */
-  border-color: unset !important;
-  text-decoration: unset !important;
-  cursor: pointer; /* keeps the pointer cursor if you like */
-  transition: none !important;
-}
+// .btn:hover{
+//   background-color: unset !important;
+//   color: unset !important;
+//   box-shadow: unset !important;
+//   /* and anything else you had on hover: */
+//   border-color: unset !important;
+//   text-decoration: unset !important;
+//   cursor: pointer; /* keeps the pointer cursor if you like */
+//   transition: none !important;
+// }
 .bg-green-commit{
   background-color: #0F8704 !important;
   color: #fff !important;

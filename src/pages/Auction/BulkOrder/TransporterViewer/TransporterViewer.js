@@ -85,7 +85,7 @@ const TransporterViewer = ({ selectedTransporters = [], onRemove = null }) => {
               </button>
             </div>
 
-            <div className="modal-body">
+            <div className="modal-body4">
               {uniqueDisplayTransporters.length === 0 ? (
                 <div className="no-transporters">
                   No transporters selected

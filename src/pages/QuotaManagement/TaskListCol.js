@@ -104,7 +104,7 @@ const priorityStatusMap = {
     1: "bg-yellow",     // assigned
     2: "bg-green-commit",     // committed
     3: "bg-turquise",        // truckallocated
-    4: "bg-warning",      // rejected
+    4: "btn-danger",      // rejected
     5: "bg-danger",   // cancelled
     0: "bg-gray",        // notassigned
 };
@@ -123,9 +123,9 @@ const Priority = ({ data }) => {
     const label = statusTextMap[data] || "unknown";
 
     return (
-        <span style={{padding:"5px",textTransform:"capitalize !important"}} className={`btn ${bgClass}`}>
+        <button style={{padding:"5px",textTransform:"capitalize !important",fontWeight:"bold"}} className={`btn ${bgClass}`}>
         {label}
-        </span>
+        </button>
     );
 };  
 

@@ -398,7 +398,7 @@ const RouteDetails = () => {
                                                 isAddUserList={false}
                                                 customPageSize={5}
                                                 className="custom-header-css"
-                                                theadClass="text-muted"
+                                            
                                                 SearchPlaceholder='Search...'
                                             />
                                         </div>

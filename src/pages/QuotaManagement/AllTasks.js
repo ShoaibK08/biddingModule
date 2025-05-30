@@ -254,6 +254,7 @@ const AllTasks = ({ onTasksUpdated }) => {
   // Update Data
 
   const handleCustomerClick = useCallback(async (arg) => {
+    setSelectedTransporterCodes1([]);
     try {
       const config = {
         // headers: {
@@ -268,7 +269,11 @@ const AllTasks = ({ onTasksUpdated }) => {
 
       console.log(response);
   
-      const assignedTransporters = response.map(t => t.transporterCode);
+      const assignedTransporters = response.map(t => ({
+          transporterCode: t.transporterCode,
+          soStatus: t.soStatus,
+        }));
+
       setSelectedTransporterCodes1(assignedTransporters);
       setSoNumber(arg.orderNumber);
       setModalEdit(true);
@@ -435,13 +440,39 @@ const columns_edit = useMemo(() => [
         type="checkbox"
         id="checkBoxAll"
         className="form-check-input"
-        checked={transporters.length > 0 && transporters.every(t => selectedTransporterCodes1.includes(t.code))}
+        // Select All is checked if ALL enabled transporters are selected
+        checked={
+          transporters.length > 0 &&
+          transporters
+            .filter(t => {
+              // Find matching selected entry for soStatus
+              const sel = selectedTransporterCodes1.find(sel => sel.transporterCode === t.code);
+              return sel?.soStatus !== 4; // only enabled transporters count here
+            })
+            .every(t =>
+              selectedTransporterCodes1.some(sel => sel.transporterCode === t.code)
+            )
+        }
         onChange={(e) => {
-          const allCodes = transporters.map(t => t.code);
           if (e.target.checked) {
-            setSelectedTransporterCodes1(allCodes);
+            // Select all ENABLED transporters (add to selection)
+            const enabledTransporters = transporters.filter(t => {
+              const sel = selectedTransporterCodes1.find(sel => sel.transporterCode === t.code);
+              return sel?.soStatus !== 4;
+            });
+
+            // Combine existing selected disabled + all enabled
+            const disabledSelected = selectedTransporterCodes1.filter(sel => sel.soStatus === 4);
+            const enabledSelected = enabledTransporters.map(t => {
+              const existing = selectedTransporterCodes1.find(sel => sel.transporterCode === t.code);
+              return existing || { transporterCode: t.code, soStatus: 1 };
+            });
+
+            setSelectedTransporterCodes1([...disabledSelected, ...enabledSelected]);
           } else {
-            setSelectedTransporterCodes1([]);
+            // Uncheck all ENABLED transporters (remove them)
+            const disabledSelected = selectedTransporterCodes1.filter(sel => sel.soStatus === 4);
+            setSelectedTransporterCodes1(disabledSelected);
           }
         }}
       />
@@ -449,48 +480,111 @@ const columns_edit = useMemo(() => [
     id: 'checkbox',
     Cell: ({ row }) => {
       const code = row.original.code;
+      const selectedItem = selectedTransporterCodes1.find(sel => sel.transporterCode === code);
+      const isDisabled = selectedItem?.soStatus === 4;
+
       return (
         <input
           type="checkbox"
           className="form-check-input"
-          checked={selectedTransporterCodes1.includes(code)}
+          checked={!!selectedItem}
+          disabled={isDisabled}
           onChange={() => {
-            if (selectedTransporterCodes1.includes(code)) {
-              setSelectedTransporterCodes1(prev => prev.filter(c => c !== code));
+            if (selectedItem) {
+              setSelectedTransporterCodes1(prev => prev.filter(c => c.transporterCode !== code));
             } else {
-              setSelectedTransporterCodes1(prev => [...prev, code]);
+              setSelectedTransporterCodes1(prev => [...prev, { transporterCode: code, soStatus: 1 }]);
             }
           }}
         />
       );
     },
   },
-  {
-    Header: "Transporter Code",
-    accessor: "code",
-    filterable: false,
-  },
-  {
-    Header: "Transporter Name",
-    accessor: "name",
-    filterable: false,
-  },
-  {
-    Header: "Location",
-    accessor: "city",
-    filterable: false,
-  },
-  {
-    Header: "Contact Person",
-    accessor: "contactPerson",
-    filterable: false,
-  },
-  {
-    Header: "Contact Number",
-    accessor: "contactNumber",
-    filterable: false,
-  },
+  ...['code', 'name', 'city', 'contactPerson', 'contactNumber'].map(accessor => ({
+    Header: accessor.charAt(0).toUpperCase() + accessor.slice(1),
+    accessor,
+    Cell: ({ row, value }) => {
+      const code = row.original.code;
+      const selectedItem = selectedTransporterCodes1.find(sel => sel.transporterCode === code);
+      const isDisabled = selectedItem?.soStatus === 4;
+
+      return (
+        <div style={{
+          opacity: isDisabled ? 0.5 : 1,
+          pointerEvents: isDisabled ? 'none' : 'auto',
+          userSelect: isDisabled ? 'none' : 'auto',
+          backgroundColor: isDisabled ? '#f8f9fa' : 'inherit',
+        }}>
+          {value}
+        </div>
+      );
+    }
+  })),
 ], [transporters, selectedTransporterCodes1]);
+
+// const columns_edit = useMemo(() => [
+//   {
+//     Header: (
+//       <input
+//         type="checkbox"
+//         id="checkBoxAll"
+//         className="form-check-input"
+//         checked={transporters.length > 0 && transporters.every(t => selectedTransporterCodes1.includes(t.code))}
+//         onChange={(e) => {
+//           const allCodes = transporters.map(t => t.code);
+//           if (e.target.checked) {
+//             setSelectedTransporterCodes1(allCodes);
+//           } else {
+//             setSelectedTransporterCodes1([]);
+//           }
+//         }}
+//       />
+//     ),
+//     id: 'checkbox',
+//     Cell: ({ row }) => {
+//       const code = row.original.code;
+//       return (
+//         <input
+//           type="checkbox"
+//           className="form-check-input"
+//           checked={selectedTransporterCodes1.includes(code)}
+//           onChange={() => {
+//             if (selectedTransporterCodes1.includes(code)) {
+//               setSelectedTransporterCodes1(prev => prev.filter(c => c !== code));
+//             } else {
+//               setSelectedTransporterCodes1(prev => [...prev, code]);
+//             }
+//           }}
+//         />
+//       );
+//     },
+//   },
+//   {
+//     Header: "Transporter Code",
+//     accessor: "code",
+//     filterable: false,
+//   },
+//   {
+//     Header: "Transporter Name",
+//     accessor: "name",
+//     filterable: false,
+//   },
+//   {
+//     Header: "Location",
+//     accessor: "city",
+//     filterable: false,
+//   },
+//   {
+//     Header: "Contact Person",
+//     accessor: "contactPerson",
+//     filterable: false,
+//   },
+//   {
+//     Header: "Contact Number",
+//     accessor: "contactNumber",
+//     filterable: false,
+//   },
+// ], [transporters, selectedTransporterCodes1]);
 
   // const columns = useMemo(
   //   () => [
@@ -561,7 +655,7 @@ const columns_edit = useMemo(() => [
   //       Cell: (cellProps) => {
   //           return <React.Fragment>
   //               <Link to="#" onClick={() => { toggleModal(); }}>
-  //                   <i className="ri-eye-fill color-g align-bottom me-2 fs-22 text-muted" style={{color: "rgba(10, 179, 156,1) !important"}}></i>
+  //                   <i className="ri-eye-fill color-g align-bottom me-2 fs-22 " style={{color: "rgba(10, 179, 156,1) !important"}}></i>
   //               </Link>
   //           </React.Fragment>;
   //       },
@@ -1122,106 +1216,226 @@ useEffect(() => {
     //if (onSort) onSort(key, direction);
   };
 
+  const [isAssigning, setIsAssigning] = useState(false);
+  const [isEditingTransporter, setIsEditingTransporter] = useState(false);
+
   const assignTransporterSubmit = async () => {
     console.log("Selected Transporter Codes:", selectedTransporterCodes);
     console.log("Selected Sales Order Codes:", selectedOrderIds);
-  
+
     const payload = {
-      soNumber: selectedOrderIds, // e.g., ["SO12345", "SO12346"]
-      transporterCode: selectedTransporterCodes, // e.g., ["916001837", "916003852"]
-      // orderPriority: true,
-      createdBy: "Robert", // Make dynamic if needed
-      plantCode: "N205"    // Make dynamic if needed
-    };
-  
-    const config = {
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',"Access-Control-Allow-Origin": "*"
-        },
-        auth: {
-            username: "amazin",
-            password: "TE@M-W@RK",
-        },
+      soNumber: selectedOrderIds,
+      transporterCode: selectedTransporterCodes,
+      createdBy: "Robert",
+      plantCode: "N205"
     };
 
-    if(selectedTransporterCodes.length > 0){
+    const config = {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        "Access-Control-Allow-Origin": "*"
+      },
+      auth: {
+        username: "amazin",
+        password: "TE@M-W@RK",
+      },
+    };
+
+    if (selectedTransporterCodes.length > 0) {
+      setIsAssigning(true); // 🔄 Start loader
+
       try {
-        const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`, payload, config);
+        const response = await axios.post(
+          `${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`,
+          payload,
+          config
+        );
+
         console.log("API Response:", response);
-        if(!response.errorMsg){
+
+        if (!response.errorMsg) {
           toast.success("Transporter Assigned Successfully!");
           fetchData(1, itemsPerPage, "total");
-        }else{
+        } else {
           toast.error("Something went wrong !!");
         }
-        
-        setSelectedTransporterCodes([]);
-        setSelectedOrderIds([]);
-        toggle();
+
       } catch (error) {
         console.error("Error assigning transporter:", error);
         toast.error("Failed to assign transporter. Please try again.");
-        
+      } finally {
         setSelectedTransporterCodes([]);
         setSelectedOrderIds([]);
         toggle();
+        setIsAssigning(false); // ✅ Stop loader
       }
-    }else{
-      toast.error("Select one transporter atleast.");
-      
+
+    } else {
+      toast.error("Select one transporter at least.");
       setSelectedTransporterCodes([]);
       setSelectedOrderIds([]);
       toggle();
     }
-  };  
+  };
 
-  const submitEditTransporter = () => {
-    
-    const soNumbers = [soNumber];
-    const payload = {
-      soNumber: soNumbers, // e.g., ["SO12345", "SO12346"]
-      transporterCode: selectedTransporterCodes1,      
-      createdBy: "user01", // Make dynamic if needed
-      plantCode: "N205"    // Make dynamic if needed
-    };
+
+  // const assignTransporterSubmit = async () => {
+  //   console.log("Selected Transporter Codes:", selectedTransporterCodes);
+  //   console.log("Selected Sales Order Codes:", selectedOrderIds);
   
-    const config = {
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',"Access-Control-Allow-Origin": "*"
-        },
-        auth: {
-            username: "amazin",
-            password: "TE@M-W@RK",
-        },
-    };
+  //   const payload = {
+  //     soNumber: selectedOrderIds, // e.g., ["SO12345", "SO12346"]
+  //     transporterCode: selectedTransporterCodes, // e.g., ["916001837", "916003852"]
+  //     // orderPriority: true,
+  //     createdBy: "Robert", // Make dynamic if needed
+  //     plantCode: "N205"    // Make dynamic if needed
+  //   };
+  
+  //   const config = {
+  //       headers: {
+  //           'Content-Type': 'application/json;charset=UTF-8',"Access-Control-Allow-Origin": "*"
+  //       },
+  //       auth: {
+  //           username: "amazin",
+  //           password: "TE@M-W@RK",
+  //       },
+  //   };
+
+  //   if(selectedTransporterCodes.length > 0){
+  //     try {
+  //       const response = await axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`, payload, config);
+  //       console.log("API Response:", response);
+  //       if(!response.errorMsg){
+  //         toast.success("Transporter Assigned Successfully!");
+  //         fetchData(1, itemsPerPage, "total");
+  //       }else{
+  //         toast.error("Something went wrong !!");
+  //       }
+        
+  //       setSelectedTransporterCodes([]);
+  //       setSelectedOrderIds([]);
+  //       toggle();
+  //     } catch (error) {
+  //       console.error("Error assigning transporter:", error);
+  //       toast.error("Failed to assign transporter. Please try again.");
+        
+  //       setSelectedTransporterCodes([]);
+  //       setSelectedOrderIds([]);
+  //       toggle();
+  //     }
+  //   }else{
+  //     toast.error("Select one transporter atleast.");
+      
+  //     setSelectedTransporterCodes([]);
+  //     setSelectedOrderIds([]);
+  //     toggle();
+  //   }
+  // };  
+
+  // const submitEditTransporter = () => {
     
-    if(selectedTransporterCodes1.length > 0){
+  //   const soNumbers = [soNumber];
+  //   const payload = {
+  //     soNumber: soNumbers, // e.g., ["SO12345", "SO12346"]
+  //     transporterCode: selectedTransporterCodes1,      
+  //     createdBy: "user01", // Make dynamic if needed
+  //     plantCode: "N205"    // Make dynamic if needed
+  //   };
+  
+  //   const config = {
+  //       headers: {
+  //           'Content-Type': 'application/json;charset=UTF-8',"Access-Control-Allow-Origin": "*"
+  //       },
+  //       auth: {
+  //           username: "amazin",
+  //           password: "TE@M-W@RK",
+  //       },
+  //   };
+    
+  //   if(selectedTransporterCodes1.length > 0){
+  //     try {
+  //       const response = axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`, payload, config);
+  //       if(!response.errorMsg){
+  //         toast.success("Transporter Updated Successfully!");
+  //         setSelectedTransporterCodes1([]);
+  //         setSoNumber(null);
+  //         fetchData(1, itemsPerPage, "total");
+  //       }else{
+  //         setSelectedTransporterCodes1([]);
+  //         setSoNumber(null);
+  //         toast.error("Something went wrong !!");
+  //       }
+  //     } catch (error) {
+  //       setSelectedTransporterCodes1([]);
+  //       setSoNumber(null);
+  //       console.error("Error assigning transporter:", error);
+  //       toast.error("Failed to assign transporter. Please try again.");
+  //     }
+  //   }else{
+  //     setSelectedTransporterCodes1([]);
+  //     setSoNumber(null);
+  //     toast.error("Select one transporter atleast.");
+  //   }
+
+  //   toggleEditModal();
+  // }
+
+  const submitEditTransporter = async () => {
+    const soNumbers = [soNumber];
+
+    const transporterCodes = selectedTransporterCodes1.map(t => t.transporterCode);
+
+    const payload = {
+      soNumber: soNumbers,
+      transporterCode: transporterCodes,
+      createdBy: "user01",
+      plantCode: "N205"
+    };
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        "Access-Control-Allow-Origin": "*"
+      },
+      auth: {
+        username: "amazin",
+        password: "TE@M-W@RK",
+      },
+    };
+
+    if (selectedTransporterCodes1.length > 0) {
+      setIsEditingTransporter(true); // 🔄 Start loader
       try {
-        const response = axios.post(`${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`, payload, config);
-        if(!response.errorMsg){
+        const response = await axios.post(
+          `${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement`,
+          payload,
+          config
+        );
+
+        if (!response.errorMsg) {
           toast.success("Transporter Updated Successfully!");
-          setSelectedTransporterCodes1([]);
-          setSoNumber(null);
           fetchData(1, itemsPerPage, "total");
-        }else{
-          setSelectedTransporterCodes1([]);
-          setSoNumber(null);
+        } else {
           toast.error("Something went wrong !!");
         }
+
       } catch (error) {
-        setSelectedTransporterCodes1([]);
-        setSoNumber(null);
         console.error("Error assigning transporter:", error);
         toast.error("Failed to assign transporter. Please try again.");
+      } finally {
+        setSelectedTransporterCodes1([]);
+        setSoNumber(null);
+        toggleEditModal();
+        setIsEditingTransporter(false); // ✅ Stop loader
       }
-    }else{
+
+    } else {
+      toast.error("Select one transporter at least.");
       setSelectedTransporterCodes1([]);
       setSoNumber(null);
-      toast.error("Select one transporter atleast.");
+      toggleEditModal();
     }
-
-    toggleEditModal();
-  }
+  };
 
   const handlePriorityToggle = async (soNumber, isChecked) => {
     const orderPriority = isChecked ? "1" : "0"; // convert to string as API expects
@@ -1257,14 +1471,16 @@ useEffect(() => {
     }
   };  
 
+  const [isCancelling, setIsCancelling] = useState(false);
+
   const submitCancelOrder = async () => {
-    //alert("dffg");
     if (!cancelRemark || !selectedSO) {
-      //alert("hello");
-      toast.error("Please enter remark and so number");
+      toast.error("Please enter remark and SO number");
       return false;
     }
-  
+
+    setIsCancelling(true); // 🔄 Start loader
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_LOCAL_URL_8085}/salesorder_allocation/cancelSalesOrder`,
@@ -1272,22 +1488,59 @@ useEffect(() => {
           soNumber: selectedSO,
           remarks: cancelRemark,
           orderStatus: "cancelled",
-          userId: sessionStorage.getItem("authUser") ? JSON.parse(sessionStorage.getItem("authUser")).data._id : null,
-        },config
+          userId: sessionStorage.getItem("authUser")
+            ? JSON.parse(sessionStorage.getItem("authUser")).data._id
+            : null,
+        },
+        config
       );
-  
+
       if (!response.erroMsg) {
         toast.success("Order cancelled successfully");
         toggleCancelModal();
         fetchData(1, itemsPerPage, "total");
-        // Optionally refresh data
       } else {
         toast.error("Cancel failed");
       }
     } catch (error) {
-      toast.error("Error cancelling order:"+ error);
+      toast.error("Error cancelling order: " + error);
+    } finally {
+      setIsCancelling(false); // ✅ Stop loader
     }
-  };  
+  };
+
+
+  // const submitCancelOrder = async () => {
+  //   //alert("dffg");
+  //   if (!cancelRemark || !selectedSO) {
+  //     //alert("hello");
+  //     toast.error("Please enter remark and so number");
+  //     return false;
+  //   }
+  
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_LOCAL_URL_8085}/salesorder_allocation/cancelSalesOrder`,
+  //       {
+  //         soNumber: selectedSO,
+  //         remarks: cancelRemark,
+  //         orderStatus: "cancelled",
+  //         userId: sessionStorage.getItem("authUser") ? JSON.parse(sessionStorage.getItem("authUser")).data._id : null,
+  //       },config
+  //     );
+  
+  //     if (!response.erroMsg) {
+  //       toast.success("Order cancelled successfully");
+  //       toggleCancelModal();
+  //       fetchData(1, itemsPerPage, "total");
+  //       // Optionally refresh data
+  //     } else {
+  //       toast.error("Cancel failed");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error cancelling order:"+ error);
+  //   }
+  // };  
 
   return (
     <React.Fragment>
@@ -1304,7 +1557,7 @@ useEffect(() => {
               </div>
             </div>
             <div className="">
-              <div className="" style={{ padding: "7px 3px 2px 0px" }}>
+              <div className="" style={{ padding: "21px 4px 3px 0px" }}>
                 <div style={{ float: "left", width: "7%" }}>
                   <select name="selectField" className="form-select" style={{ width: "94%" }} value={itemsPerPage} onChange={handleItemsPerPageChange}>
                     <option value={5}>5</option>
@@ -1326,7 +1579,7 @@ useEffect(() => {
             <div className="table-responsive">
               <section ref={dropdownRef}>
                 <div>
-                  <Nav className="nav-tabs nav-tabs-custom nav-success tog_con" role="tablist" style={{ border: "solid 1px lightgray", borderRadius: "4px", position: "absolute", top: "21px", right: "13px" }}>
+                  <Nav className="nav-tabs nav-tabs-custom nav-success tog_con" role="tablist" style={{ border: "solid 1px lightgray", borderRadius: "4px", position: "absolute", top: "35px", right: "13px" }}>
                     <NavItem>
                       <NavLink>
                         <span className="buttonForToggle text-end" onClick={() => setOpen(!open)}>
@@ -1368,7 +1621,7 @@ useEffect(() => {
                   <thead>
                     <tr>
                       {visibleColumns.checkbox && (
-                        <th class="color-blue-bg">
+                        <th class="">
                           <input
                             type="checkbox"
                             className="form-check-input"
@@ -1389,21 +1642,21 @@ useEffect(() => {
                           />
                         </th>
                       )}
-                      {visibleColumns.soNumber && <th  class="color-blue-bg">SO Number</th>}
-                      {visibleColumns.soItem && <th class="color-blue-bg">SO Item</th>}
-                      {visibleColumns.orderQuantity && <th class="color-blue-bg">Order Quantity</th>}
-                      {visibleColumns.allocatedQty && <th class="color-blue-bg">Allocated Qty</th>}
-                      {visibleColumns.availableQty && <th class="color-blue-bg">Available Qty.</th>}
-                      {visibleColumns.cityDesc && <th class="color-blue-bg">City Desc</th>}
-                      {visibleColumns.material && <th class="color-blue-bg">Material</th>}
-                      {visibleColumns.shipToParty && <th class="color-blue-bg">Ship To Party</th>}
-                      {visibleColumns.shipToPartyName && <th class="color-blue-bg">Ship To Party Name</th>}
-                      {visibleColumns.dateTimeReachYard && <th class="color-blue-bg">Date/Time to Reach Yard</th>}
-                      {visibleColumns.vehicleDetails && <th class="color-blue-bg">Vehicle Details</th>}
-                      {visibleColumns.orderPriority && <th class="color-blue-bg">Order Priority</th>}
-                      {visibleColumns.soStatus && <th class="color-blue-bg">SO Status</th>}
-                      {visibleColumns.cancelOrder && <th class="color-blue-bg">Cancel Order</th>}
-                      {visibleColumns.transporterDetail && <th class="color-blue-bg">Transporter Detail</th>}
+                      {visibleColumns.soNumber && <th>SO Number</th>}
+                      {visibleColumns.soItem && <th>SO Item</th>}
+                      {visibleColumns.orderQuantity && <th>Order Quantity (MT)</th>}
+                      {visibleColumns.allocatedQty && <th>Allocated Quantity (MT)</th>}
+                      {visibleColumns.availableQty && <th>Available Quantity (MT)</th>}
+                      {visibleColumns.cityDesc && <th>City Desc</th>}
+                      {visibleColumns.material && <th>Material</th>}
+                      {visibleColumns.shipToParty && <th>Ship To Party</th>}
+                      {visibleColumns.shipToPartyName && <th>Ship To Party Name</th>}
+                      {/* {visibleColumns.dateTimeReachYard && <th>Date/Time to Reach Yard</th>} */}
+                      {visibleColumns.vehicleDetails && <th>Vehicle Details</th>}
+                      {visibleColumns.orderPriority && <th>Order Priority</th>}
+                      {visibleColumns.soStatus && <th>SO Status</th>}
+                      {visibleColumns.cancelOrder && <th>Cancel Order</th>}
+                      {visibleColumns.transporterDetail && <th>Transporter Detail</th>}
                     </tr>
                   </thead>
 
@@ -1444,7 +1697,7 @@ useEffect(() => {
                           {visibleColumns.material && <td>{item.materialCode}</td>}
                           {visibleColumns.shipToParty && <td>{item.shipToParty}</td>}
                           {visibleColumns.shipToPartyName && <td>{item.shipToPartyName}</td>}
-                          {visibleColumns.dateTimeReachYard && <td>{item.creationTime}</td>}
+                          {/* {visibleColumns.dateTimeReachYard && <td>{item.creationTime}</td>} */}
                           {visibleColumns.vehicleDetails && (
                             <td>
                               <a
@@ -1459,7 +1712,7 @@ useEffect(() => {
                                   opacity: item.soStatus === 3 ? 1 : 0.5,
                                 }}
                               >
-                                <i className="ri-eye-fill color-g align-bottom me-2 fs-22 text-muted"></i>
+                                <i className="eye-icon-cl ri-eye-fill color-g align-bottom me-2 fs-22 text-muted"></i>
                               </a>
                             </td>
                           )}
@@ -1559,7 +1812,7 @@ useEffect(() => {
         className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggle}>
+        <ModalHeader className="p-3" toggle={toggle}>
           {"Assign Transporter"}
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -1574,7 +1827,7 @@ useEffect(() => {
                 divClass="table-responsive table-card table-card1 mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light"
                 handleTaskClick={handleTaskClicks}
                 SearchPlaceholder='Search for tasks or something...'
             />
@@ -1588,10 +1841,30 @@ useEffect(() => {
                 }}
                 className="btn-light"
               >Close</Button>
-              <button type="button" onClick={() => 
+              {/* <button type="button" onClick={() => 
                  {
                   assignTransporterSubmit();
-                }} className="btn color-blue-bg" id="add-btn">{"Assign Transporter"}</button>
+                }} className="btn color-blue-bg" id="add-btn">{"Assign Transporter"}</button> */}
+              <button
+                type="button"
+                onClick={assignTransporterSubmit}
+                className="btn color-blue-bg"
+                id="add-btn"
+                disabled={isAssigning}
+              >
+                {isAssigning ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Assigning...
+                  </>
+                ) : (
+                  "Assign Transporter"
+                )}
+              </button>
             </div>
           </div>
       </Modal>
@@ -1604,24 +1877,31 @@ useEffect(() => {
         className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggleEditModal}>
+        <ModalHeader className="p-3" toggle={toggleEditModal}>
           {"Edit Transporter"}
         </ModalHeader>
           <ModalBody className="modal-body">
             <TableContainer
-                columns={columns_edit}
-              //  data={(taskList || [])}
-                data={transporters}
-                isGlobalFilter={true}
-                isGlobalSearch={true}
-                customPageSize={5}
-                className="custom-header-css"
-                divClass="table-responsive table-card table-card1 mb-3"
-                tableClass="align-middle table-nowrap mb-0"
-                theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
-                SearchPlaceholder='Search for tasks or something...'
+              columns={columns_edit}
+              data={transporters}
+              isGlobalFilter={true}
+              isGlobalSearch={true}
+              customPageSize={5}
+              className="custom-header-css"
+              divClass="table-responsive table-card table-card1 mb-3"
+              tableClass="align-middle table-nowrap mb-0"
+              theadClass="table-light table-nowrap"
+              thClass="table-light "
+              SearchPlaceholder='Search for tasks or something...'
+              getRowProps={row => {
+                const code = row.original.code;
+                const selectedItem = selectedTransporterCodes1.find(sel => sel.transporterCode === code);
+                return {
+                  className: selectedItem?.soStatus === 4 ? 'disabled-row' : '',
+                };
+              }}
             />
+
           </ModalBody>
           <div className="modal-footer">
             <div className="hstack gap-2 justify-content-end">
@@ -1632,7 +1912,27 @@ useEffect(() => {
                 }}
                 className="btn-light"
               >Close</Button>
-              <button type="button" className="btn color-blue-bg" onClick={() => { submitEditTransporter(); }} id="add-btn">{"Edit Transporter"}</button>
+              {/* <button type="button" className="btn color-blue-bg" onClick={() => { submitEditTransporter(); }} id="add-btn">{"Edit Transporter"}</button> */}
+              <button
+                type="button"
+                className="btn color-blue-bg"
+                onClick={submitEditTransporter}
+                id="add-btn"
+                disabled={isEditingTransporter}
+              >
+                {isEditingTransporter ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Updating...
+                  </>
+                ) : (
+                  "Edit Transporter"
+                )}
+              </button>
             </div>
           </div>
       </Modal> 
@@ -1645,7 +1945,7 @@ useEffect(() => {
         className="border-0"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggleCancelModal}>
+        <ModalHeader className="p-3" toggle={toggleCancelModal}>
           {"Cancel Order"}
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -1657,7 +1957,27 @@ useEffect(() => {
           </ModalBody>
           <div className="modal-footer">
             <div className="hstack gap-2 justify-content-end">
-              <button type="submit" className="btn color-blue-bg" onClick={() => { submitCancelOrder(); }} id="add-btn">{"Cancel Order"}</button>
+              {/* <button type="submit" className="btn color-blue-bg" onClick={() => { submitCancelOrder(); }} id="add-btn">{"Cancel Order"}</button> */}
+                <button
+                  type="submit"
+                  className="btn color-blue-bg"
+                  onClick={submitCancelOrder}
+                  id="add-btn"
+                  disabled={isCancelling}
+                >
+                  {isCancelling ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Cancelling...
+                    </>
+                  ) : (
+                    "Cancel Order"
+                  )}
+                </button>
             </div>
           </div>
       </Modal>        
@@ -1667,10 +1987,10 @@ useEffect(() => {
         toggle={toggleModal}
         centered
         size="lg"
-        className="border-0"
+        className="border-0 for-custom-apply"
         modalClassName='modal fade zoomIn'
       >
-        <ModalHeader className="p-3 bg-soft-info" toggle={toggleModal}>
+        <ModalHeader className="p-3" toggle={toggleModal}>
           {"Truck Details"}
         </ModalHeader>
           <ModalBody className="modal-body">
@@ -1684,7 +2004,7 @@ useEffect(() => {
                 divClass="table-responsive table-card table-card1 mb-3"
                 tableClass="align-middle table-nowrap mb-0"
                 theadClass="table-light table-nowrap"
-                thClass="table-light color-blue-bg text-muted"
+                thClass="table-light "
                // handleTaskClick={handleTaskClicks}
                 SearchPlaceholder='Search for tasks or something...'
             />

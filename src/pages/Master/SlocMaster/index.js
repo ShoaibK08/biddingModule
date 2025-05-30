@@ -146,7 +146,7 @@ const SlocMaster = () => {
   }
 
   const commitVehicledata = async (e) => {
-    debugger;
+     
     e.preventDefault();
     try {
       axios.put(`${process.env.REACT_APP_LOCAL_URL_8082}/slotmaster/commitVehicles?id=${event.id}&count=${values.count}`, '', config)
@@ -442,7 +442,8 @@ const SlocMaster = () => {
 
 
   const submitMultiEvent = async (id) => {
-    debugger;
+     
+    setSlotNumber(id);
     const res = await axios.get(`${process.env.REACT_APP_LOCAL_URL_8082}/slotmaster/getSlot/${id}`, config);
     const st_date = res.slotDateFromFormatted;
     const ed_date = res.slotDateToFormatted;
@@ -596,7 +597,7 @@ const SlocMaster = () => {
 
   const submitEventData = async (e) => {
     e.preventDefault();
-    debugger;
+     
 
     const id = document.getElementById("update_event_id").value;
     console.log("id_val", id);
@@ -812,7 +813,7 @@ const SlocMaster = () => {
    */
   const [slotNumber, setSlotNumber] = useState('');
   const handleEventClick = async (arg) => {
-    debugger;
+     
     const event = arg.event;
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
     let transCode = obj.data.transporterCode;

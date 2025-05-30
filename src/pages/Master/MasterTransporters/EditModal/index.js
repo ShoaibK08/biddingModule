@@ -913,29 +913,7 @@ const EditModal = ({
                                 )}
                             </Col>
 
-                            <Col md={4}>
-                                <Label className="form-label">
-                                    Price (Per KM)<span style={{ color: "red" }}>*</span>
-                                </Label>
-                                <Input
-                                    type="text"
-                                    required
-                                    id="priceKm"
-                                    name="priceKm"
-                                    placeholder="Enter Price Per KM"
-                                    value={values.priceKm || ""}
-                                    onChange={handleInputChangeWithValidation}
-                                    onBlur={() => handleBlur('priceKm')}
-                                    className={`form-control ${shouldShowError('priceKm', validatePrice(values.priceKm)) ? 'is-invalid' : ''}`}
-                                />
-                                {shouldShowError('priceKm', validatePrice(values.priceKm)) && (
-                                    <div className="invalid-feedback">
-                                        Price must be a valid number (e.g., 25 or 25.50).
-                                    </div>
-                                )}
-                            </Col>
-
-                            <Col md={4}>
+                             <Col md={4}>
                                 <Label htmlFor="termsOfPayment" className="form-label">
                                     Term of Payment<span style={{ color: "red" }}>*</span>
                                 </Label>
@@ -959,6 +937,30 @@ const EditModal = ({
                                     </div>
                                 )}
                             </Col>
+
+                            <Col md={4}>
+                                <Label className="form-label">
+                                    Price (Per KM)<span style={{ color: "red" }}>*</span>
+                                </Label>
+                                <Input
+                                    type="text"
+                                    required
+                                    id="priceKm"
+                                    name="priceKm"
+                                    placeholder="Enter Price Per KM"
+                                    value={values.priceKm || ""}
+                                    onChange={handleInputChangeWithValidation}
+                                    onBlur={() => handleBlur('priceKm')}
+                                    className={`form-control ${shouldShowError('priceKm', validatePrice(values.priceKm)) ? 'is-invalid' : ''}`}
+                                />
+                                {shouldShowError('priceKm', validatePrice(values.priceKm)) && (
+                                    <div className="invalid-feedback">
+                                        Price must be a valid number (e.g., 25 or 25.50).
+                                    </div>
+                                )}
+                            </Col>
+
+                           
                         </Row>
 
                         {/* ROW 4: Tax Information, Region, Service Level Agreement */}

@@ -86,7 +86,7 @@ const BidOrderConfirmation = () => {
           <Row>
             <Col lg={12}>
               <Card>
-                <div className="card-body pt-4">
+                <div className="card-body pt-4" style={{height:"200vh"}}>
                   <div>
                     <h2 className="mb-4">
                       Bid No :- {loading ? "Loading..." : bidNo}
