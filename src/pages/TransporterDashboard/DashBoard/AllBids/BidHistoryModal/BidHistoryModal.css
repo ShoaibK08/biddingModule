@@ -1,0 +1,115 @@
+.modal-title-header {
+    background-color: #f6f9fc !important;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid #e3e9ef !important;
+  }/* Bid History Modal Styles */
+  .bid-history-modal .modal-content {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .bid-history-modal .modal-header {
+    background-color: #f6f9fc;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #444444;
+    font-weight: 500;
+  }
+  
+  .bid-history-modal .modal-header .close {
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 300;
+    color: #000;
+    opacity: 0.5;
+    background: none;
+    border: none;
+  }
+  
+  .bid-history-modal .modal-header .close:hover {
+    opacity: 0.75;
+  }
+  
+  .bid-history-modal .search-box {
+    width: 250px;
+  }
+  
+  /* Table Styles */
+  .bid-history-table {
+    margin-bottom: 0;
+  }
+  
+  .bid-history-table thead th {
+    background-color: #f6f9fc;
+    color: #444444;
+    font-weight: 500;
+    padding: 12px 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    border: none;
+    border-bottom: 1px solid #e3e9ef;
+  }
+  
+  .bid-history-table tbody td {
+    padding: 12px 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    border: none;
+    color: #333;
+  }
+  
+  .bid-history-table .even-row {
+    background-color: #f8f9ff;
+  }
+  
+  .bid-history-table .odd-row {
+    background-color: #ffffff;
+  }
+  
+  /* Pagination Styles */
+  .pagination-container {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  .pagination-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    border-radius: 4px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-btn:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+  
+  .page-info {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .page-input {
+    width: 50px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-left: 10px;
+  }

@@ -1,0 +1,36 @@
+.tat-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  .tat-card {
+    width: 48%;
+    background-color: #fff;
+    border-radius: 16px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+    padding: 20px;
+    border: 1px solid #8080809e;
+    position: relative;
+  }
+
+  .tat-title {
+    background-color: #3b4e9a;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
+
+.echarts-for-react {
+    margin-top: 20px; /* space from title */
+}

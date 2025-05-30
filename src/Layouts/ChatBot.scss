@@ -1,0 +1,363 @@
+#hd_color {
+    color: #fff !important;
+}
+
+/* Chatbot Icon */
+.chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.chatbot-avatar {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.chatbot-avatar:hover {
+    transform: scale(1.1);
+}
+
+/* Chatbot Modal */
+.chatbot-modal .modal-content {
+    border-radius: 15px;
+}
+
+.chatbot-messages {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 350px;
+}
+
+.chatbot-messages-expanded {
+    max-height: 81vh;
+    /* Increases the max height in expanded view */
+    transition: max-height 0.3s ease;
+    /* Smooth height transition */
+    height: 81vh;
+}
+
+.message-wrapper {
+    margin-bottom: 10px;
+    display: grid;
+}
+
+.user-message {
+    background-color: #09b59d;
+    color: #fff;
+    border-radius: 5px 0px 5px 5px;
+    padding: 5px 12px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.ai-message {
+    background-color: #f8d7da;
+    color: #0f0909;
+    align-self: flex-start;
+    border-radius: 0px 5px 5px 5px;
+    padding: 5px 12px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Chatbot Input */
+.chatbot-input input {
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+
+.chatbot-input button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Voice Offcanvas */
+.voice-offcanvas .voice-animation {
+    animation: pulse 2s infinite;
+}
+
+.wave-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.voice-wave {
+    width: 8px;
+    height: 30px;
+    background-color: #0d6efd;
+    border-radius: 4px;
+    animation: wave 1s infinite;
+}
+
+.voice-wave:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.voice-wave:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.voice-wave:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Animations */
+@keyframes wave {
+
+    0%,
+    100% {
+        height: 30px;
+    }
+
+    50% {
+        height: 15px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+//Blinking Shadow
+.point {
+    background: rgba(25, 118, 210, 0.4);
+    border-radius: 50%;
+    animation: alots 1s ease-in-out infinite none;
+}
+
+@keyframes alots {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 0 16px rgba(187, 222, 251, 0.3);
+    }
+}
+
+
+
+/* General scrollbar styling for all containers */
+.custom-scroll {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #09b59d #f0f0f0;
+}
+
+.chatbot-messages-expandedcustom-scroll {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #09b59d #f0f0f0;
+    max-height: 100%;
+}
+
+/* Webkit browsers (Chrome, Safari, etc.) */
+.custom-scroll::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+    height: 8px;
+    /* Height of the scrollbar */
+}
+
+
+/* Webkit browsers (Chrome, Safari, etc.) */
+.chatbot-messages-expandedcustom-scroll::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+    height: 8px;
+    /* Height of the scrollbar */
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #09b59d;
+    border-radius: 10px;
+}
+
+.chatbot-messages-expandedcustom-scroll::-webkit-scrollbar-thumb {
+    background-color: #09b59d;
+    border-radius: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+}
+
+.custom-scroll::-webkit-scrollbar-button {
+    display: none;
+    /* Hides the up/down arrows */
+}
+
+/* Optional: For containers like chatbox with max height */
+.chatbox {
+    height: auto;
+    /* Ensures the chatbox can grow */
+    max-height: 500px;
+    /* You can set a maximum height if desired */
+}
+
+/* Ensure responsiveness for all sizes */
+@media (max-width: 768px) {
+
+    /* General scrollbar styling for all containers */
+    .custom-scroll {
+        overflow-y: auto;
+        /* Enables vertical scrolling */
+        scrollbar-width: thin;
+        /* Makes the scrollbar thin for Firefox */
+        scrollbar-color: #09b59d #f0f0f0;
+        /* Sets the color of the scrollbar thumb and track for Firefox */
+    }
+
+    /* Webkit browsers (Chrome, Safari, etc.) */
+    .custom-scroll::-webkit-scrollbar {
+        width: 8px;
+        /* Width of the scrollbar */
+        height: 8px;
+        /* Height of the scrollbar */
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background-color: #09b59d;
+        border-radius: 10px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-track {
+        background-color: #f0f0f0;
+    }
+
+    .custom-scroll::-webkit-scrollbar-button {
+        display: none;
+        /* Hides the up/down arrows */
+    }
+
+    /* Optional: For containers like chatbox with max height */
+    .chatbox {
+        height: auto;
+        /* Ensures the chatbox can grow */
+        max-height: 500px;
+        /* You can set a maximum height if desired */
+    }
+}
+
+/* For larger screens (above 768px), you can use the default size */
+@media (min-width: 769px) {
+
+    /* General scrollbar styling for all containers */
+    .custom-scroll {
+        overflow-y: auto;
+        /* Enables vertical scrolling */
+        scrollbar-width: thin;
+        /* Makes the scrollbar thin for Firefox */
+        scrollbar-color: #09b59d #f0f0f0;
+        /* Sets the color of the scrollbar thumb and track for Firefox */
+    }
+
+    /* Webkit browsers (Chrome, Safari, etc.) */
+    .custom-scroll::-webkit-scrollbar {
+        width: 8px;
+        /* Width of the scrollbar */
+        height: 8px;
+        /* Height of the scrollbar */
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background-color: #09b59d;
+        border-radius: 10px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-track {
+        background-color: #f0f0f0;
+    }
+
+    .custom-scroll::-webkit-scrollbar-button {
+        display: none;
+        /* Hides the up/down arrows */
+    }
+
+    /* Optional: For containers like chatbox with max height */
+    .chatbox {
+        height: auto;
+        /* Ensures the chatbox can grow */
+        max-height: 500px;
+        /* You can set a maximum height if desired */
+    }
+}
+
+
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.m-0 {
+    margin: 0;
+}
+
+.pls-wait-loader {
+    font-size: 1.2rem;
+    /* Adjust the size as needed */
+    font-weight: bold;
+    /* Optional for emphasis */
+    color: #09b59d;
+    /* Customize color */
+    animation: blink 1s infinite;
+    /* Apply the blinking effect */
+}
+
+.custom-scrolltext {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #09b59d #f0f0f0;
+}
+
+
+.custom-scrolltext::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+
+.custom-scrolltext::-webkit-scrollbar-thumb {
+    background-color: #09b59d;
+    border-radius: 10px;
+}
+
+.custom-scrolltext::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+}
+
+.custom-scrolltext::-webkit-scrollbar-button {
+    display: none;
+}

@@ -1,0 +1,112 @@
+/* Bid Cards */
+.bidding-cards-container { 
+    margin-bottom: 1.5rem;
+  }  
+  
+  .bidding-card { 
+    overflow: hidden; 
+    border: 1px solid #e9ebec; 
+    border-radius: 8px; 
+    box-shadow: -0px 10px 40px 0px #E4E6FF; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+    background-color: white;
+    padding: 0;
+    margin-bottom: 0;
+  }  
+  
+  .bidding-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); 
+  }  
+  
+  .bidding-number { 
+    background-color: #405189; 
+    border-top-right-radius: 30px; 
+    border-bottom-right-radius: 30px; 
+    width: 130px; 
+    font-weight: 500; 
+    font-size: 14px; 
+    padding: 0.5rem; 
+    text-align: center; 
+    color: white; 
+    margin-top: 10px;
+  }  
+  
+  .bidding-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 10px 25px;
+    text-align: center;
+  }
+  
+  .bidding-time-circle { 
+    width: 95px;
+    height: 95px; 
+    border-radius: 50%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    background: linear-gradient(180deg, #E1E1E1 0%, #FFFFFF 100%);
+    box-shadow: -0px 10.65px 10.65px 0px #FFFFFF inset, 0px -5px 10.65px 0px #D9D9D9 inset;
+    margin-top: 5px;
+  }  
+  
+  .bidding-time-label { 
+    font-size: 12px;
+    font-weight: 500; 
+    color: #828284; 
+    margin-bottom: 0; 
+    line-height: 1.1;
+  }  
+  
+  .bidding-time-value { 
+    font-size: 1.2rem;
+    font-weight: 600; 
+    color: #0a2985;
+    margin-top: 5px;
+  }
+  
+  /* Responsive Styles for Bid Cards */ 
+  @media (max-width: 768px) { 
+    .bidding-card {
+      height: 140px;
+    }
+    
+    .bidding-number {   
+      width: 110px;   
+      font-size: 12px; 
+      margin-top: 8px;
+    }  
+    
+    .bidding-time-circle {   
+      width: 85px;
+      height: 85px; 
+    } 
+    
+    .bidding-time-label {
+      font-size: 10px;
+    }
+    
+    .bidding-time-value {
+      font-size: 1rem;
+      margin-top: 3px;
+    }
+  }
+  
+  @media (max-width: 576px) { 
+    .bidding-card {
+      height: 156px
+    }
+    
+    .bidding-number {   
+      width: 95px;   
+      font-size: 10px; 
+    }  
+    
+    .bidding-time-circle {   
+      width: 75px;
+      height: 75px; 
+    }
+  }

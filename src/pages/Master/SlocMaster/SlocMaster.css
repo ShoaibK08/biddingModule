@@ -1,0 +1,26 @@
+.fc-daygrid-day-number{
+    font-size: 16px !important;
+    /* position: relative !important;
+    top: 10x !important;
+    right: 30px !important; */
+    }
+ 
+      .css-13cymwt-control{
+        background: none !important;
+      }
+      
+      /* .fc-h-event {
+        background-color: #37d8c536;
+        
+      } */
+      /* .fc-h-event .fc-event-main {
+        color: #03A9F4 !important;
+      } */
+        /* Add to your CSS file */
+      .custom-blue-button {
+       background-color: #405189 !important;
+       color: white;
+      }
+      .custom-blue-button:hover {
+      color: white !important;
+      }

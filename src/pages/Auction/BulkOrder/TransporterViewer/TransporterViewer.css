@@ -1,0 +1,348 @@
+/* TransporterViewer.css */
+
+/* View Icon Button */
+.transporter-view-icon {
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  margin-left: 10px;
+  transition: all 0.2s;
+}
+
+.transporter-view-icon:hover {
+  background-color: #e9ecef;
+}
+
+.transporter-view-icon i {
+  font-size: 16px;
+  color: #405189;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+/* Modal Content */
+.modal-content1 {
+  width: 750px;
+  max-width: 95%;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.modal-close-btn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+  background-color: #fff;
+}
+
+.no-transporters {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Table Styles */
+.transporters-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+.transporters-table thead {
+  background-color: #405189;
+}
+
+.transporters-table th {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: white;
+  font-weight: normal;
+}
+
+.transporters-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  color: black;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transporters-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Specific column styling */
+.th-transporter-code,
+.td-transporter-code {
+  width: 20%;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.th-transporter-name {
+  width: 30%;
+}
+
+.th-contact-person {
+  width: 25%;
+}
+
+.th-phone-no {
+  width: 25%;
+}
+
+/* Pagination Styles - BACKGROUND COLORS REMOVED */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-top: 20px;
+  background-color: transparent;
+}
+
+.total-results {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: transparent;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+  border-color: #405189;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f9f9f9;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.page-input {
+  width: 50px;
+  height: 32px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 0 8px;
+}
+
+.page-input:focus {
+  outline: none;
+  border-color: #405189;
+  box-shadow: 0 0 0 2px rgba(64, 81, 137, 0.1);
+}
+
+/* Modal Footer - BACKGROUND COLOR REMOVED */
+.modal-footer {
+  padding: 12px 20px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #e9ecef;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-content1 {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .transporter-view-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .transporters-table {
+    font-size: 12px;
+  }
+  
+  .transporters-table th,
+  .transporters-table td {
+    padding: 8px 12px;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .pagination-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .total-results {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-header {
+    padding: 12px 16px;
+  }
+  
+  .modal-body {
+    padding: 16px;
+  }
+  
+  .modal-footer {
+    padding: 12px 16px;
+  }
+  
+  .transporters-table {
+    font-size: 11px;
+  }
+  
+  .th-transporter-code,
+  .td-transporter-code {
+    width: 100px;
+  }
+  
+  .th-transporter-name {
+    width: 120px;
+  }
+  
+  .th-contact-person {
+    width: 100px;
+  }
+  
+  .th-phone-no {
+    width: 100px;
+  }
+}
+
+/* Scrollbar Styling */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

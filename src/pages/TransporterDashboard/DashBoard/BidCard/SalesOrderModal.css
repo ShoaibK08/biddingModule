@@ -1,0 +1,351 @@
+/* Dashboard Styles */
+.dashboard-container {
+  margin-bottom: 30px;
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-title {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.calendar-input {
+  max-width: 200px;
+}
+
+.view-all-link {
+  color: #556ee6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
+}
+
+/* Bid Cards styling */
+.bid-cards-container {
+  margin-bottom: 20px;
+}
+
+.bid-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.bid-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bid-number {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.time-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.time-label {
+  font-size: 10px;
+  color: #6c757d;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.time-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Table Styling */
+.table-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.custom-header-css .table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  padding: 12px 15px;
+}
+
+.action-icon {
+  background-color: rgba(85, 110, 230, 0.1);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #556ee6;
+  margin-right: 5px;
+}
+
+.action-icon:hover {
+  background-color: #556ee6;
+  color: #fff;
+}
+
+.action-icon-close {
+  background-color: rgba(244, 106, 106, 0.1);
+  color: #f46a6a;
+}
+
+.action-icon-close:hover {
+  background-color: #f46a6a;
+  color: #fff;
+}
+
+/* Status Badges */
+.status-badge-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-running {
+  background-color: rgba(11, 192, 143, 0.1);
+  color: #0bc08f;
+}
+
+.status-to-be-start {
+  background-color: rgba(86, 125, 244, 0.1);
+  color: #567df4;
+}
+
+.status-cancel-bid {
+  background-color: rgba(244, 106, 106, 0.1);
+  color: #f46a6a;
+}
+
+.status-completed {
+  background-color: rgba(83, 83, 83, 0.1);
+  color: #535353;
+}
+
+/* Button container for Confirm Order button */
+.button-container {
+  margin-left: 5px;
+}
+
+.confirm-button {
+  background-color: #34c38f;
+  border-color: #34c38f;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.confirm-button:hover {
+  background-color: #2aa97a;
+  border-color: #2aa97a;
+}
+
+/* Bid Confirmation Modal Styling */
+.bid-confirmation-modal .modal-content {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bid-confirmation-modal .modal-header {
+  background-color: #fff;
+  padding: 15px 20px;
+}
+
+.bid-confirmation-title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Bid Confirmation Modal Table Styles */
+.bid-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+}
+
+.bid-confirmation-modal .table {
+  margin-bottom: 0;
+  width: 100%;
+  min-width: 1200px; /* Ensures table doesn't shrink too much */
+}
+
+.bid-confirmation-modal .sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Customized scrollbar styles */
+.bid-table-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.bid-table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.bid-table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.bid-table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.bid-confirmation-modal .table th {
+  background-color: #556ee6;
+  color: black !important; /* Adding !important to override any conflicting styles */
+  font-weight: 500;
+  border-color: #4458c7;
+}
+
+.bid-confirmation-modal .table td {
+  vertical-align: middle;
+  padding: 10px 15px;
+}
+
+.bid-confirmation-modal .modal-footer {
+  border-top: none;
+  padding: 15px 20px;
+}
+
+.bid-cancel-btn {
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.action-btn {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* Star rating styles */
+.ri-star-fill, .ri-star-line, .ri-star-half-fill {
+  font-size: 18px;
+  margin: 0 1px;
+}
+
+.text-success {
+  color: #34c38f !important;
+}
+
+.text-warning {
+  color: #f1b44c !important;
+}
+
+.text-danger {
+  color: #f46a6a !important;
+}
+
+/* Sales Order Modal CSS */
+.sales-order-modal .modal-title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.sales-order-modal .search-input {
+  min-width: 250px;
+}
+
+.sales-order-modal .filter-button {
+  border-radius: 4px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sales-order-modal .column-toggle-container {
+  border: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+.sales-order-modal .toggle-title {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.sales-order-modal .form-check-input {
+  width: 2.5em;
+  height: 1.25em;
+  margin-top: 0;
+  background-color: rgba(135, 150, 165, 0.15);
+  border-color: #e0e0e0;
+}
+
+.sales-order-modal .form-check-input:checked {
+  background-color: #34c38f;
+  border-color: #34c38f;
+}
+
+.sales-order-modal .form-check-label {
+  font-size: 14px;
+  color: #495057;
+}
+
+.sales-order-modal .nav-tabs-custom .nav-link {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.sales-order-modal .nav-tabs-custom .nav-link.active {
+  color: #556ee6;
+  border-bottom: 2px solid #556ee6;
+}
+
+.sales-order-modal .custom-header-css .table th {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+}
+
+.sales-order-modal .table {
+  margin-bottom: 0;
+}
+
+/* Form Switch styling to match the reference */
+.form-switch .form-check-input {
+  height: 1.25em;
+  width: 2.5em;
+  cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+  background-position: right center;
+}

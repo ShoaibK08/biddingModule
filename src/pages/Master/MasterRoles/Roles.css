@@ -1,0 +1,35 @@
+.inside{
+    border: solid 1px #ddd;
+    padding: 20px;
+    background: #f3f3f9;
+    margin: 0 0 0 0;
+    border-radius: 5px;
+}
+.card-header{
+    padding: 10px;
+}
+.green{
+    color:#08b39c;
+    margin: 3px;
+}
+#search_div{
+    margin-bottom: 10px !important;
+}
+.additional_calender_css{
+    height: 27px;
+    margin-left: 15px;
+    border: solid 1px grey;
+    line-height: 0 !important;
+    border-radius: 2px;
+}
+
+.additional_calender_css1{
+    height: 27px;
+    margin-left: 8px;
+    border: solid 1px grey;
+    line-height: 0 !important;
+    border-radius: 2px;
+}
+.bg-salmon{
+    display: none;
+}

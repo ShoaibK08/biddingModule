@@ -1,0 +1,54 @@
+
+.button_custom {
+    outline:none!important;
+    background: none!important;
+    border:0!important;
+    margin:.5em!important;
+  }
+  .round-button {
+    width:40%;
+    margin-left: 6%;
+  }
+  .round-button-circle {
+    width: 67%;
+    height:0;
+    padding: 35%;
+      border-radius: 50%;
+    border:2px solid #0ab39c;
+      overflow:hidden;
+      
+      background: #4679BD; 
+      box-shadow: 0 0 3px gray;
+  }
+  .round-button-circle:hover {
+  /*  background:#30588e;*/
+
+  }
+  .round-button a, .round-button span {
+      display:block;
+    float:left;
+    width:100%;
+    padding-top:50%;
+      padding-bottom:50%;
+    line-height:1em;
+    margin-top:-0.5em;
+      
+    text-align:center;
+    color:#e2eaf3;
+      font-family:Verdana;
+      font-size:1.9em;
+      font-weight:bold;
+      text-decoration:none;
+  }
+  .singleimg
+  {
+    background-image: url(../../assets/images/single.png);
+    background-size: cover;
+    background-position: center;
+  }
+  .allimg
+  {
+    background-image: url(../../assets/images/allcamera.png);
+    background-size: cover;
+    background-position: center;
+  }

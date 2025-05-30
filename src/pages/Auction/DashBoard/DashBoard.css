@@ -1,0 +1,420 @@
+/* =====================================================
+   BASIC VARIABLES
+   ===================================================== */
+:root {
+  --primary-color: #364574;
+  --secondary-color: #4069e6;
+  --success-color: #0F8704;
+  --warning-color: #FFD56A;
+  --danger-color: #FF7072;
+  --muted-color: #8a909d;
+  --border-color: #e9ebec;
+  --text-muted: #495057;
+}
+
+/* =====================================================
+   DASHBOARD LAYOUT
+   ===================================================== */
+.dashboard-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.dashboard-header {
+  margin-bottom: 8px;
+}
+
+.dashboard-title {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.view-all-link {
+  color: var(--secondary-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bid-cards-container {
+  margin-bottom: 16px;
+}
+
+/* =====================================================
+   TABLE STYLING
+   ===================================================== */
+thead {
+  background-color: var(--primary-color) !important;
+}
+
+.table-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.table-card .card-body {
+  padding-bottom: 0;
+}
+
+.table thead th {
+  white-space: nowrap;
+  padding: 12px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody td {
+  padding: 10px 8px;
+  font-size: 13px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table-responsive {
+  margin-top: 0;
+}
+
+/* Text truncation utility */
+.text-truncate-custom {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* =====================================================
+   STATUS BADGES
+   ===================================================== */
+.status-badge-container {
+  display: inline-block;
+  min-width: 85px;
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-running {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.status-to-be-start {
+  background-color: var(--warning-color);
+  color: black;
+}
+
+.status-cancel-bid {
+  background-color: var(--muted-color);
+  color: white;
+}
+
+.status-completed {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+/* =====================================================
+   ACTION BUTTONS
+   ===================================================== */
+.action-buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+.action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.action-icon:hover {
+  background-color: #f8f9fa;
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.action-icon-close {
+  color: var(--danger-color);
+}
+
+.action-icon-close:hover {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.confirm-order-btn {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+  color: white !important;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+}
+
+.confirm-btn {
+  font-size: 11px;
+  padding: 4px 8px;
+  line-height: 1.2;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.confirm-button:hover {
+  background-color: #2a3660;
+}
+
+/* =====================================================
+   MODAL STYLES
+   ===================================================== */
+.sales-order-modal .modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.sales-order-modal .modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+
+.sales-order-modal .modal-header .btn-close {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  padding: 10px;
+  margin: -10px;
+}
+
+.sales-order-modal .search-input {
+  width: 300px;
+  border-radius: 4px;
+}
+
+.sales-order-modal .filter-button {
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  color: #495057;
+}
+
+.sales-order-modal .filter-button:hover {
+  background-color: #f8f9fa;
+}
+
+.sales-order-modal .sales-order-table th {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  font-weight: 600;
+  padding: 12px 15px;
+}
+
+.sales-order-modal .sales-order-table td {
+  padding: 12px 15px;
+}
+
+.sales-order-modal .pagination {
+  margin-top: 15px;
+  justify-content: flex-end;
+}
+
+.sales-order-modal .pagination .page-link {
+  border-radius: 4px;
+  margin: 0 3px;
+  color: var(--secondary-color);
+}
+
+.sales-order-modal .pagination .active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.sales-order-modal .modal-body {
+  padding: 15px 20px;
+}
+
+.bid-confirmation-modal .modal-header {
+  background-color: #f8f9fa;
+  padding: 16px 24px;
+}
+
+.bid-confirmation-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.bid-table-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eaedf1;
+}
+
+.modal-footer {
+  border-top: 1px solid #eaedf1;
+}
+
+.bid-cancel-btn {
+  min-width: 100px;
+}
+
+/* =====================================================
+   SEARCH AND FILTERS
+   ===================================================== */
+.calendar-input {
+  width: auto;
+}
+
+.dataTables_filter {
+  margin-bottom: 12px;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 768px) {
+  .page-content {
+    padding: 70px 10px 60px;
+  }
+
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .card-body {
+    padding: 15px 10px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .bid-number {
+    width: 120px;
+    font-size: 12px;
+  }
+
+  .time-circle {
+    width: 65px;
+    height: 65px;
+    margin: 5px auto;
+  }
+
+  .time-label {
+    font-size: 11px;
+  }
+
+  .time-value {
+    font-size: 1rem;
+  }
+
+  .table thead th {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .table tbody td {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .action-buttons-container {
+    gap: 4px;
+  }
+
+  .action-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+  }
+
+  .confirm-btn {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .dashboard-title {
+    font-size: 16px;
+  }
+
+  .view-all-link {
+    font-size: 12px;
+  }
+
+  .action-buttons-container {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+/* =====================================================
+   UTILITY CLASSES
+   ===================================================== */
+.nowrap-header {
+  white-space: nowrap;
+}
+
+.no-hover-effect:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.custom-header-css.single-line-headers th {
+  white-space: nowrap;
+}
+
+.table-fixed-layout {
+  table-layout: fixed;
+}
+
+.th-no-wrap {
+  white-space: nowrap;
+}
+
+.table-header-override th {
+  white-space: nowrap;
+}
+
+/* Card spacing reset */
+.card {
+  margin-bottom: 0;
+}

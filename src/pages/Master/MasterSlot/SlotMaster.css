@@ -1,0 +1,98 @@
+.fc-daygrid-day-number {
+    font-size: 16px !important;
+    /* position: relative !important;
+top: 10x !important;
+right: 30px !important; */
+}
+
+/* .fc-event-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  } */
+
+.css-13cymwt-control {
+    background: none !important;
+}
+/* 
+.fc-h-event {
+    background-color: #37d8c536;
+} */
+.event-status-a{
+  background-color: #FF961B1A;
+}
+.event-status-a .fc-event-main {
+  color: #FF9F2D !important;
+}
+.event-status-b{
+   background-color: #0085FF1A;
+}
+.event-status-b .fc-event-main {
+  color: #0085FF !important;
+}
+
+.event-status-c{
+  background-color: #20744A1A;
+}
+.event-status-c .fc-event-main {
+  color: #0F8704 !important;
+}
+
+
+/* .fc-h-event .fc-event-main {
+    color: #03A9F4 !important;
+} */
+
+.slotmasterCss {
+    border: none !important;
+    border-bottom: 2px solid grey !important;
+    border-radius: 0px !important;
+}
+
+.css-13cymwt-control {
+    border: none !important;
+}
+
+.headingnewSlot {
+    width: 95%;
+    margin: -6px 0px 0px 20px;
+    border: 1px solid;
+}
+
+.slotCloseModal {
+    margin: 0px 20px 0px 0px;
+}
+/* .page-title1 h6 {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .page-title1 span {
+    white-space: nowrap;
+  }
+   */
+
+/* .fc-daygrid-day-events{
+    position: relative;
+    top: 7px;
+} */
+.fc-scrollgrid-sync-table tr {
+    height: 15% !important;
+}
+/*   
+  .fc-daygrid-event-harness.fc-daygrid-event-harness-abs {
+  height: 6px !important; 
+}
+.fc .fc-event {
+  font-size: 10px !important; 
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+.fc .fc-event-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+} */

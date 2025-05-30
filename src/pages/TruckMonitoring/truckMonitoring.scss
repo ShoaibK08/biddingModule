@@ -1,0 +1,406 @@
+.rib_bon span {
+  width: auto !important;
+}
+
+.rib_bon::after {
+  display: none;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  //background: #f6f7f8;
+  background-image: linear-gradient(90deg, #f6f7f8 30%, #9da8e2 50%, #f6f7f8 75%);
+  //background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 75%);;
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.blue_color {
+  color: #f69d04;
+  font-weight: bold !important;
+  font-size: 14px !important;
+}
+
+#sim_color {
+  color: rgb(19, 19, 74) !important;
+  text-shadow: 1px 2px 2px #1169EC;
+}
+
+#sim_color_notgettingWSData {
+  color: #13134a !important;
+  text-shadow: 1px 2px 2px #1169EC;
+  background: azure;
+}
+
+.stageDD {
+  width: auto !important;
+  float: inline-end !important;
+  height: 30px !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  padding: 0rem 2.7rem 0rem 0.9rem !important;
+  font-size: 0.8rem !important;
+  font-weight: bold;
+  color: darkblue;
+}
+
+._custom {
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  /* 16:9 aspect ratio */
+  overflow: hidden;
+  background-color: black;
+}
+
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-table {
+  border: 1px solid #a3e6f6;
+  border-radius: 5px;
+  border-collapse: separate;
+  border-spacing: 0;
+  padding: 1px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: none;
+  /* Remove inner borders */
+  padding: 8px;
+  /* Add some padding for better spacing */
+}
+
+.team-box .team-cover img, .profile-offcanvas .team-cover img, .modal-team-cover img {
+  height: 117% !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+#exampleModalFullscreen .modal-content{
+border-radius: 5px !important;
+}
+
+//Direction Css
+
+#up_ul {
+  display: flex;
+  position: absolute;
+  left: -10px;
+  margin: 0;
+}
+
+#down_ul {
+  display: flex;
+  position: absolute;
+  right: 20px;
+  margin: 0;
+}
+
+#up_li {
+  position: static;
+  border: 3px solid #00ff00;
+  list-style: none;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 50px;
+  display: flex;
+}
+
+#down_li {
+  position: static;
+  border: 3px solid #00ff00;
+  list-style: none;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 50px;
+}
+
+#up_li,#down_li {
+  align-self: center;
+}
+
+#up_li {
+  flex-direction: column-reverse;
+  padding: 30px 10px 0px 10px
+}
+
+#down_li {
+  flex-direction: column-reverse;
+  padding: 0 10px 30px 10px
+}
+
+.arrowup {
+  width: 20px;
+    height: 20px;
+    position: relative;
+    box-shadow: -5px -5px #00ff00;
+    transform: rotate(45deg);
+    border-radius: 5px;
+}
+.arrowdown {
+  width: 20px;
+    height: 20px;
+    position: relative;
+    box-shadow: -5px -5px #00ff00;
+    transform: rotate(225deg);
+    border-radius: 5px;
+}
+
+.m1 {
+  animation: ani3 1.0s steps(5, start) infinite;
+  -webkit-animation: ani3 1.0s steps(5, start) infinite;
+}
+
+.m2 {
+  animation: ani2 1.0s steps(5, start) infinite;
+  -webkit-animation: ani2 1.0s steps(5, start) infinite;
+}
+
+.m3 {
+  animation: ani1 1.0s steps(5, start) infinite;
+  -webkit-animation: ani1 1.0s steps(5, start) infinite;
+}
+
+@keyframes ani1 {
+  0% {
+    opacity: 0.1;
+  }
+
+  11% {
+    opacity: 0.1;
+  }
+
+  22% {
+    opacity: 0.1;
+  }
+
+  33% {
+    opacity: 0.15;
+  }
+
+  44% {
+    opacity: 0.25;
+  }
+
+  55% {
+    opacity: 0.5;
+  }
+
+  66% {
+    opacity: 1;
+  }
+
+  77% {
+    opacity: 0.5;
+  }
+
+  88% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes ani2 {
+  0% {
+    opacity: 0.1;
+  }
+
+  11% {
+    opacity: 0.15;
+  }
+
+  22% {
+    opacity: 0.25;
+  }
+
+  33% {
+    opacity: 0.5;
+  }
+
+  44% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.5;
+  }
+
+  66% {
+    opacity: 0.25;
+  }
+
+  77% {
+    opacity: 0.15;
+  }
+
+  88% {
+    opacity: 0.1;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes ani3 {
+  0% {
+    opacity: 0.25;
+  }
+
+  11% {
+    opacity: 0.5;
+  }
+
+  22% {
+    opacity: 1;
+  }
+
+  33% {
+    opacity: 0.5;
+  }
+
+  44% {
+    opacity: 0.25;
+  }
+
+  55% {
+    opacity: 0.15;
+  }
+
+  66% {
+    opacity: 0.1;
+  }
+
+  77% {
+    opacity: 0.1;
+  }
+
+  88% {
+    opacity: 0.1;
+  }
+
+  100% {
+    opacity: 0.15;
+  }
+}
+
+#left_ul {
+  display: flex;
+  position: absolute;
+  top: 50%; /* Adjust as needed */
+  left: 0px; /* Adjust as needed */
+  margin: 0;
+  transform: translateY(-50%); /* Center vertically */
+}
+
+#left_li {
+  position: static;
+  border: 3px solid #00ff00;
+  list-style: none;
+  margin: 10px;
+  padding: 10px 25px;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row-reverse; /* Align arrows in reverse for left movement */
+  align-items: center;
+}
+
+.arrowleft {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  box-shadow: -5px -5px #00ff00;
+  transform: rotate(-45deg); /* Arrow points to the left */
+  border-radius: 5px;
+}
+
+.m1 {
+  animation: ani3 1.0s steps(5, start) infinite;
+  -webkit-animation: ani3 1.0s steps(5, start) infinite;
+}
+
+.m2 {
+  animation: ani2 1.0s steps(5, start) infinite;
+  -webkit-animation: ani2 1.0s steps(5, start) infinite;
+}
+
+.m3 {
+  animation: ani1 1.0s steps(5, start) infinite;
+  -webkit-animation: ani1 1.0s steps(5, start) infinite;
+}
+
+#right_ul {
+  display: flex;
+  position: absolute;
+  top: 50%; /* Adjust as needed */
+  right: 40px; /* Adjust as needed */
+  margin: 0;
+  transform: translateY(-50%); /* Center vertically */
+}
+
+#right_li {
+  position: static;
+  border: 3px solid #00ff00;
+  list-style: none;
+  margin: 10px;
+  padding: 10px 25px;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row; /* Align arrows for right movement */
+  align-items: center;
+}
+
+.arrowright {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  box-shadow: -5px -5px #00ff00;
+  transform: rotate(135deg); /* Arrow points to the right */
+  border-radius: 5px;
+}
+
+.m1 {
+  animation: ani3 1.0s steps(5, start) infinite;
+  -webkit-animation: ani3 1.0s steps(5, start) infinite;
+}
+
+.m2 {
+  animation: ani2 1.0s steps(5, start) infinite;
+  -webkit-animation: ani2 1.0s steps(5, start) infinite;
+}
+
+.m3 {
+  animation: ani1 1.0s steps(5, start) infinite;
+  -webkit-animation: ani1 1.0s steps(5, start) infinite;
+}
+
