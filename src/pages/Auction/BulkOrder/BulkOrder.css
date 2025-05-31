@@ -1,7 +1,7 @@
 .bulk-order-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 15px;
+  /* padding: 15px; */
   background: #fff;
   border-radius: 8px;
 }
@@ -196,8 +196,8 @@
 .bulk-order-route-selector,
 .bulk-order-transporter-selector {
   height: 42px;
-  border: 2px solid #e1e8ed;
-  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+  border-radius: 4px;
   background-color: #fff;
   transition: all 0.3s ease;
   cursor: pointer;

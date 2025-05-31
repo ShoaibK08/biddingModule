@@ -101,7 +101,7 @@ const BidCard = ({ bid, handleViewClick, handleHistoryClick, handleSoDetailsClic
                         </div>
                     ) : bid.status === "Running" ? (
                         <div className="text-center">
-                            <div className="fw-bold">Rank 1</div>
+                        
                             <div>{bid.transporterCode}</div>
                         </div>
                     ) : (

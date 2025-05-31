@@ -804,7 +804,7 @@ const RouteMapping = () => {
                         return {
                             id: route.id,
                             routeCode: route.routeCode || "",
-                            departureLocation: route.routeDetermination || route.routeName || "",
+                            shippingPoint: route.shippingPoint || "",
                             destinationLocation: route.routeDestination || "",
                             routeType: route.routeType || "",
                             distance: route.routeDistance ? `${route.routeDistance} km` : "",
@@ -891,7 +891,7 @@ const RouteMapping = () => {
                 if (result.datalist && Array.isArray(result.datalist)) {
                     const transformedData = result.datalist.map(item => ({
                         routeCode: item.routeCode || "",
-                        departureLocation: item.routeName || "",
+                        shippingPoint: item.shippingPoint || "",
                         destinationLocation: item.routeDestination || "",
                         routeType: item.routeType || "",
                         distance: item.routeDistance || ""

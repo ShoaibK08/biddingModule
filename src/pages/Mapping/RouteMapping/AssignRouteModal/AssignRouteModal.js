@@ -310,7 +310,7 @@ const AssignRouteModal = ({
       },
       { 
         Header: "Departure Location", 
-        accessor: "departureLocation",
+        accessor: "shippingPoint",
         Cell: ({ value }) => value || "-"
       },
       { 

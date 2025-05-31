@@ -23,11 +23,17 @@
 /* Status Pill */
 .status-pill {
   height: 20px;
-  width: 79px;
+  min-width: 79px;
+  /* Changed from fixed width to min-width */
+  width: auto;
+  /* Allow width to expand based on content */
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
+  /* Prevent text wrapping */
+  text-align: center;
 }
 
 .status-pill.running {

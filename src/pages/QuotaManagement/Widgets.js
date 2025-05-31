@@ -156,30 +156,31 @@ const Widgets = ({ reloadKey }) => {
 
     const columns2 = useMemo(() => [
       {
-        Header: "So Code",
-        accessor: "code",
+        Header: "So Number",
+        accessor: "orderNumber",
         filterable: false,
       },
       {
-        Header: "Transporter Name",
-        accessor: "name",
+        Header: "Material Code",
+        accessor: "materialCode",
         filterable: false,
       },
       {
-        Header: "Location",
-        accessor: "city",
+        Header: "Total Quantity",
+        accessor: "orderQuantity",
         filterable: false,
       },
       {
-        Header: "Contact Person",
-        accessor: "contactPerson",
+        Header: "Available Quantity (MT)",
+        accessor: "remainingQty",
         filterable: false,
       },
       {
-        Header: "Contact Number",
-        accessor: "contactNumber",
+        Header: "City",
+        accessor: "cityDesc",
         filterable: false,
-      },
+      }
+      
     ], []);
 
     return (

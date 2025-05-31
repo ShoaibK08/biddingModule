@@ -430,6 +430,17 @@ const SOBasedOrder = ({ bidNo }) => {
       if (!values.selectTransporter || values.selectTransporter.length === 0) {
         validationErrors.selectTransporter = "Please select at least one transporter";
       }
+
+      // Add validation for Sales Order Details without auto-opening
+      if (!selectedOrders || selectedOrders.length === 0) {
+        validationErrors.salesOrders = "Please select at least one sales order";
+      }
+
+      // Add validation for maximum allowed sales orders (if needed)
+      const maxAllowedOrders = 50;
+      if (selectedOrders.length > maxAllowedOrders) {
+        validationErrors.salesOrders = `You can select maximum ${maxAllowedOrders} sales orders`;
+      }
     }
 
     // Step 2 validation (Delivery and Allocation)
@@ -549,39 +560,33 @@ const SOBasedOrder = ({ bidNo }) => {
           values.selectTransporter.map(item => [item.id, item])
         ).values()];
 
-        // Find selected order details from the salesOrders array
-        const getSelectedOrderDetails = (orderNo) => {
-          return salesOrders.find(order => order.orderNo === orderNo);
-        };
+        // Create an array to store all bidding objects
+        const biddingObjects = [];
 
-        // Create a bid objects array for all selected transporters
-        const biddingObjects = uniqueTransporters.map(transporter => {
-          // Prepare the sales orders data for this transporter
-          const formattedSalesOrders = selectedOrders.map(orderNo => {
-            const orderDetails = getSelectedOrderDetails(orderNo);
+        // For each transporter, create a bidding object
+        for (const transporter of uniqueTransporters) {
+          // Format sales orders for this transporter
+          const salesOrdersForTransporter = selectedOrders.map(orderNo => {
+            const orderDetails = salesOrders.find(order => order.orderNo === orderNo);
             const originalOrder = orderDetails?.originalData || {};
-
-            // Format validity as "DD-MM-YYYY HH:MM" per API requirements
-            const today = new Date();
-            const validityStr = formatValidityDateForAPI(today);
-
-            const quantityStr = orderDetails?.quantity || "0";
-            const quantityNum = parseInt(quantityStr.toString().replace(/\D/g, '')) || 0;
 
             return {
               soNumber: orderDetails?.orderNo || orderNo,
-              validity: validityStr, // Now using DD-MM-YYYY HH:MM format
+              validity: formatValidityDateForAPI(new Date()),
               material: originalOrder.materialCode || orderDetails?.material || '',
-              quantity: quantityNum,
+              quantity: parseInt(orderDetails?.quantity?.toString().replace(/\D/g, '') || '0'),
               transporterCode: transporter.id,
-              plantCode: originalOrder.plant || "PLANT01",
+              plantCode: originalOrder.plant || JSON.parse(sessionStorage.getItem("authUser"))?.data?.plantCode || "PLANT01",
               biddingOrderNo: bidNo,
               status: "A"
             };
           });
 
-          // Return a complete bidding object for each transporter
-          return {
+          // Calculate total quantity for this transporter
+          const totalQuantity = salesOrdersForTransporter.reduce((sum, order) => sum + order.quantity, 0);
+
+          // Create bidding object for this transporter
+          const biddingObject = {
             biddingMaster: {
               transporterCode: transporter.id,
               ceilingPrice: parseFloat(values.ceilingAmount) || 0,
@@ -591,7 +596,7 @@ const SOBasedOrder = ({ bidNo }) => {
               lastTimeExtension: timeToMinutes(values.lastMinutesExtension),
               extentionQuantity: parseInt(values.extensionQuantity) || 0,
               bidUnit: 1,
-              addOn: "Not Required", // Changed to match API request
+              addOn: "Not Required",
               intervalAmount: parseFloat(values.intervalAmount) || 0,
               noOfInput: selectedOrders.length,
               intervalAllocate: timeToMinutes(values.intervalTimeForAllocatingVehicle),
@@ -602,36 +607,39 @@ const SOBasedOrder = ({ bidNo }) => {
               bid: 1,
               bidType: "ONLINE",
               biddingOrderNo: bidNo,
-              createdDate: formatDateOnlyForAPI(new Date()), // Now using YYYY-MM-DD format
-              route: 100.0, // Set to 100.0 as in the example
+              createdDate: formatDateOnlyForAPI(new Date()),
+              route: 100.0,
               multiMaterial: 1,
               city: "Mumbai",
-              material: formattedSalesOrders[0]?.material || "Steel", // Default to Steel if no material
-              quantity: formattedSalesOrders.reduce((total, order) => total + order.quantity, 0),
+              material: salesOrdersForTransporter[0]?.material || "Steel",
+              quantity: totalQuantity,
               extentionQty: parseInt(values.extensionQuantity) || 0,
               autoAllocationSalesOrder: values.autoAllocateTo === "Yes" ? 1 : 0,
               fromLocation: "PlantA",
               toLocation: "PlantB"
             },
-            salesOrders: formattedSalesOrders
+            salesOrders: salesOrdersForTransporter
           };
-        });
 
+          biddingObjects.push(biddingObject);
+        }
 
+        // Prepare the final API request payload
         const apiData = {
-          bulk: false,
+          bulk: true,
           biddings: biddingObjects
         };
 
-        // Enhanced logging for debugging
         console.log("API Request Data:", JSON.stringify(apiData, null, 2));
-        console.log("Date format being tested for validity:", formatDateOnlyForAPI(new Date()));
-        console.log("Date format being tested for bid dates:", formatDateForAPI(new Date()));
 
-        // API call with enhanced error handling
+        // Make the API call
         const response = await fetch(`${process.env.REACT_APP_LOCAL_URL_8082}/biddingMaster/bulk`, {
           method: 'POST',
-          headers: getAuthHeaders(),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Basic ${btoa('Amazin:TE@M-W@RK')}`
+          },
           body: JSON.stringify(apiData)
         });
 
@@ -639,37 +647,36 @@ const SOBasedOrder = ({ bidNo }) => {
           const errorText = await response.text();
           console.error("API Error Response:", errorText);
           console.error("Response Status:", response.status);
-          console.error("Response Headers:", Object.fromEntries([...response.headers.entries()]));
           throw new Error(`API responded with status: ${response.status}, message: ${errorText}`);
         }
 
         const result = await response.json();
         console.log("API Success Response:", result);
-        setBiddingOrderNo(result[0]?.data?.biddingOrderNo);
 
-        // Show success toast notification
+        // Update bidding order number if available
+        if (result && result[0]?.data?.biddingOrderNo) {
+          setBiddingOrderNo(result[0].data.biddingOrderNo);
+        }
+
+        // Show success notification
         toast.success("Your SO based bid has been created successfully!", {
-
           autoClose: 3000,
           toastId: 'bid-success-toast',
           position: "top-right",
           className: "bg-light"
         });
+
+        // Trigger bid number refresh
         document.dispatchEvent(new CustomEvent('refreshBidNumber'));
 
-        // After successful submission, go to Finish
+        // Move to success step and show modal
         setActiveStep(4);
-        // Show success modal
         setShowSuccessModal(true);
-
-
-        // After successful submission, reset form and go back to first step
 
       } catch (error) {
         console.error("API Error Details:", error);
         setSubmitError(error.message);
-        // Show error toast notification
-        toast.error("Something went wrong!", {
+        toast.error(`Failed to create bid: ${error.message}`, {
           toastId: 'error-toast',
           position: "top-right",
           autoClose: 4000,
@@ -1365,15 +1372,17 @@ const SOBasedOrder = ({ bidNo }) => {
             {/* Improved Accordion Sales Order Selection with API integration */}
             <div className="so-based-order-accordion">
               <div
-                className={`so-based-order-accordion-header ${errors.salesOrders ? "border-error border-2" : ""}`}
+                className={`so-based-order-accordion-header ${errors.salesOrders ? "border-error" : ""}`}
                 onClick={toggleAccordion}
               >
-                <span>Select Sales Order Details <span className="color-error">*</span></span>
+                <span>
+                  Select Sales Order Details <span className="color-error">*</span>
+                </span>
                 <i className={`ri-arrow-${accordionOpen ? 'up' : 'down'}-s-line`}></i>
               </div>
 
               <div
-                className={`so-based-order-accordion-content ${accordionOpen ? 'open' : ''} ${errors.salesOrders ? "border-error border-2" : ""}`}
+                className={`so-based-order-accordion-content ${accordionOpen ? 'open' : ''} ${errors.salesOrders ? "border-error" : ""}`}
                 style={{
                   display: accordionOpen ? 'block' : 'none',
                 }}
@@ -1487,9 +1496,9 @@ const SOBasedOrder = ({ bidNo }) => {
               </div>
             </div>
 
-            {/* Display error for sales order selection */}
+            {/* Show validation message outside the accordion */}
             {errors.salesOrders && (
-              <div className="invalid-feedback mb-4">
+              <div className="invalid-feedback" style={{ display: 'block', marginTop: '4px' }}>
                 {errors.salesOrders}
               </div>
             )}
@@ -1867,21 +1876,8 @@ const SOBasedOrder = ({ bidNo }) => {
         )}
       </Form>
 
-      {/* Add ToastContainer for notifications */}
-      <ToastContainer
-        closeButton={false}
-        limit={1}
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastClassName="bg-light"
-      />
+    
+   
       {/* Show success modal */}
       {showSuccessModal && <SuccessModal />}
     </>

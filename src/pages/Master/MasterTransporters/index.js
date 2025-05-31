@@ -890,7 +890,7 @@ const checkForChanges = (currentValues) => {
                                     <Row className="g-4 align-items-center">
                                         <div className="col-sm">
                                             <div >
-                                                <h5 className="card-title1 mb-0 bg-light">Transporter Master  Details</h5>
+                                                <h5 className="card-title1 mb-0 bg-light">Transporter Master </h5>
                                             </div>
                                         </div>
                                         <div className="col-sm-auto">

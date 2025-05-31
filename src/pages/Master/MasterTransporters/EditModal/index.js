@@ -747,7 +747,7 @@ const EditModal = ({
                 <ModalBody className="p-3">
                     <div>
                         {/* ROW 1: Transporter Code, Name, Address */}
-                        <Row className="mb-1">
+                        <Row className="mb-2">
                             <Col md={4}>
                                 <Label htmlFor="code" className="form-label">
                                     Transporter Code
@@ -813,7 +813,7 @@ const EditModal = ({
                         </Row>
 
                         {/* ROW 2: Contact Person, Phone, Email */}
-                        <Row className="mb-1">
+                        <Row className="mb-2">
                             <Col md={4}>
                                 <Label htmlFor="contactPerson" className="form-label">
                                     Contact Person<span style={{ color: "red" }}>*</span>
@@ -884,7 +884,7 @@ const EditModal = ({
                         </Row>
 
                         {/* ROW 3: Mode of Transport, Price, Term of Payment */}
-                        <Row className="mb-1">
+                        <Row className="mb-2">
                             <Col md={4}>
                                 <Label className="form-label">
                                     Mode Of Transport<span style={{ color: "red" }}>*</span>
@@ -964,7 +964,7 @@ const EditModal = ({
                         </Row>
 
                         {/* ROW 4: Tax Information, Region, Service Level Agreement */}
-                        <Row className="mb-1">
+                        <Row className="mb-2">
                             <Col md={4}>
                                 <Label htmlFor="taxInformation" className="form-label">
                                     Tax Information<span style={{ color: "red" }}>*</span>
@@ -1114,7 +1114,7 @@ const EditModal = ({
                         </Row>
 
                         {/* ROW 6: Rating/Status */}
-                        <Row className="mb-1">
+                        <Row className="mb-2">
                             <Col md={4}>
                                 <Label htmlFor="transporterRating" className="form-label">
                                     Rating (auto Calculated)

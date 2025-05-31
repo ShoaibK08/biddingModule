@@ -16,7 +16,7 @@ const ViewRoutesModal = ({
   const columns = useMemo(
     () => [
       { Header: "Route Code", accessor: "routeCode" },
-      { Header: "Departure Location", accessor: "departureLocation" },
+      { Header: "Departure Location", accessor: "shippingPoint" },
       { Header: "Destination Location", accessor: "destinationLocation" },
       { Header: "Route Type", accessor: "routeType" },
       { Header: "Distance", accessor: "distance" },

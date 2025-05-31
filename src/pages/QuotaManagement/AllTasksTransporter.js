@@ -868,6 +868,7 @@ const AllTasksTransporter = () => {
       } else {
         toast.error(response.errorMsg);
       }
+
       fetchData(1, itemsPerPage, "total");
       setModalVisible(false);
     } catch (err) {
@@ -877,6 +878,46 @@ const AllTasksTransporter = () => {
       setIsSubmitting(false); // ✅ Stop loader
     }
   };
+
+
+  // const submitCommitReject = async () => {
+  //   if (!cancelRemark.trim()) {
+  //     alert("Please enter a remark.");
+  //     return;
+  //   }
+
+  //   const payload = {
+  //     transporterCode: selectedTransporter,
+  //     soNumber: selectedSO,
+  //     orderStatus: modalAction,
+  //     remarks: cancelRemark,
+  //   };
+
+  //   setIsSubmitting(true); // 🔄 Start loader
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_LOCAL_URL_8085}/orderManagement/update`,
+  //       payload,
+  //       config
+  //     );
+
+  //     if (!response.errorMsg) {
+  //       toast.success(
+  //         `${modalAction === "committed" ? "Order committed" : "Order rejected"} successfully.`
+  //       );
+  //     } else {
+  //       toast.error(response.errorMsg);
+  //     }
+  //     fetchData(1, itemsPerPage, "total");
+  //     setModalVisible(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Something went wrong.");
+  //   } finally {
+  //     setIsSubmitting(false); // ✅ Stop loader
+  //   }
+  // };
 
   // const submitCommitReject = async () => {
   //   if (!cancelRemark.trim()) {
@@ -1012,16 +1053,15 @@ const AllTasksTransporter = () => {
         
         <Col lg={12}>
           <div className="" id="tasksList">
-            <div className="border-0">
+            {/* <div className="border-0">
               <div className="d-flex align-items-center">
                 <div className="flex-shrink-0">
                   <div className="d-flex flex-wrap gap-2" style={{marginBottom: "14px"}}>
-                    {/* <button className="btn btn-success add-btn me-1 for-new-css-1" onClick={() => { setIsEdit(false); toggle(); }}><i className="ri-add-line align-bottom me-1"></i> Assign Transporter</button> */}
                   </div>
                 </div>
               </div>
-            </div>
-            <button className="btn btn-success" style={{float: "right",marginRight: "56px",marginTop: "7px"}} onClick={() => setIsExportCSV(true)}>Export</button>
+            </div> */}
+            <button className="btn btn-success" style={{float: "right",marginRight: "56px",marginTop: "9px"}} onClick={() => setIsExportCSV(true)}>Export</button>
             <div className="">
               <div className="" style={{ padding: "7px 3px 2px 0px" }}>
                 <div style={{ float: "left", width: "7%" }}>
@@ -1040,7 +1080,7 @@ const AllTasksTransporter = () => {
             <div className="table-responsive">
               <section ref={dropdownRef}>           
                 <div>
-                  <Nav className="nav-tabs nav-tabs-custom nav-success tog_con" role="tablist" style={{ border: "solid 1px lightgray", borderRadius: "4px", position: "absolute", top: "21px", right: "13px" }}>
+                  <Nav className="nav-tabs nav-tabs-custom nav-success tog_con" role="tablist" style={{ border: "solid 1px lightgray", borderRadius: "4px", position: "absolute", top: "8px", right: "13px" }}>
                     <NavItem>
                       <NavLink>
                         <span className="buttonForToggle text-end" onClick={() => setOpen(!open)}>
@@ -1296,8 +1336,16 @@ const AllTasksTransporter = () => {
               type="submit"
               className="btn color-blue-bg"
               onClick={submitCommitReject}
+              disabled={isSubmitting} // prevent duplicate clicks
             >
-              {modalAction === "committed" ? "Commit Order" : "Reject Order"}
+              {isSubmitting ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Processing...
+                </>
+              ) : (
+                modalAction === "committed" ? "Commit Order" : "Reject Order"
+              )}
             </button>
           </div>
         </div>
